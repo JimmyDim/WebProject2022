@@ -5,6 +5,8 @@ const path = require('path');
 require('./db/mongoose')
 
 app.use(express.json())
+
+const adminRouter = require('./routers/adminRouter')
 app.use(adminRouter)
 
 app.listen(3000, () => {

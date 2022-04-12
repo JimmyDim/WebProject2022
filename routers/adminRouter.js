@@ -2,7 +2,7 @@ const express = require('express')
 const router = new express.Router()
 const Poi = require('../models/poiModel')
 
-const fetch = require("node-fetch")
+//const fetch = require("node-fetch")
 
 //Post POI
 router.post('/newpoi', async (req, res, next) => {
