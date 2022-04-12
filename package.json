@@ -1,0 +1,25 @@
+{
+  "name": "WebProject2022",
+  "version": "1.0.0",
+  "description": "This is the project for the CEID Web Development Course.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JimmyDim/WebProject2022.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JimmyDim/WebProject2022/issues"
+  },
+  "homepage": "https://github.com/JimmyDim/WebProject2022#readme",
+  "dependencies": {
+    "ejs": "^3.1.6",
+    "express": "^4.17.3",
+    "mongoose": "^6.2.10"
+  }
+}
