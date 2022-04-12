@@ -10,7 +10,7 @@ router.post('/newpoi', async (req, res, next) => {
     console.log("creating poi");
 
     poi.save().then(() => {
-        res.send(har)
+        res.send(poi)
     }).catch((e) => {
         res.send(e)
     })
