@@ -30,4 +30,7 @@
       
    1) Before saving a new user in the DB we run a middleware function that implements the hashing of the password.
  
+  **User Login**
   
+    User provides the username and the password in order to login in his account.
+    Its important to know every time if the user is logged in. So we use a session middleware which associates information with a particular cookie that is sent back    to the user, with the user.id. 
