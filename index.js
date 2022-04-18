@@ -1,20 +1,19 @@
 const express = require('express');
 const app = express();
+const path = require('path');
+const userRouter = require('./routers/user');
+const session = require('express-session');
+require('./db/mongoose')
 
+app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+//parse the request body.
+app.use(express.urlencoded({extended : true}));
+app.use(session({secret : 'notagoodsecret'}));
 
-app.get('/adminLogin', (req,res)=>{
-    res.render('adminLogin.ejs');
-})
-
-app.get('/dataAdministration', (req,res)=>{
-    res.render('dataAdministration.ejs')
-})
-
-app.get('/statistics', (req, res)=>{
-    res.render('statistics.ejs')
-})
+app.use(express.json())
+app.use(userRouter);
 
 app.listen(3000, ()=>{
-    console.log("Listening on port 3000!");
+    console.log("App is listening on port 3000!");
 })
