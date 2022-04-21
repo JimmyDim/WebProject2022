@@ -1,12 +1,11 @@
 const mongoose = require('mongoose');
 
+mongoose.connect('mongodb://localhost:27017/covid', { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => {
+        console.log("Database Connected")
+    })
+    .catch(err => {
+        console.log("DATABASE CONNECTION ERROR!")
+        console.log(err)
+    })
 
-mongoose.connect('mongodb://localhost:27017/user', {})
-mongoose.connect('mongodb://localhost:27017/user', {useNewUrlParser: true, useUnifiedTopology: true})
-.then(()=>{
-    console.log("MONGO CONNECTION OPEN!!");
-})
-.catch(err => {
-    console.log("MONGO CONNECTION ERROR!!");
-    console.log(err)
-})
