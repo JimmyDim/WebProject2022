@@ -116,5 +116,3 @@ This is the project for the CEID Web Development Course.
     4. Frontend 
     5. Test 
     6. Beautify
-
-
