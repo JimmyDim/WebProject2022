@@ -58,8 +58,13 @@ userSchema.statics.passwordValidation = async (password)=>{
 //Returns the object of the foundUser or False.
 userSchema.statics.findAndValidate = async (username, password)=>{
     const foundUser = await User.findOne({username});
-    const isValid = await bcrypt.compareSync(password, foundUser.password);
-    return isValid ? foundUser : false;
+    if(foundUser !== null){
+        const isValid = await bcrypt.compareSync(password, foundUser.password);
+        return isValid ? foundUser : false;
+    }else{
+        return false;
+    }
+    
 }
 
 userSchema.pre('save', async function(next){
@@ -68,9 +73,9 @@ userSchema.pre('save', async function(next){
     if (user.isModified('password')){
         user.password = await bcrypt.hash(user.password, 8);
     }
+    console.log("Entered into the middleware function!");
     next()
 })
-
 
 const User = mongoose.model('User', userSchema);
 
