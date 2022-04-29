@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New POI</title>
+</head>
+
+<body>
+    <form action="/pois" method="POST">
+        <div>
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name">
+        </div>
+        <div>
+            <label for="address">Address</label>
+            <input type="text" id="address" name="address">
+        </div>
+        <div>
+            <label for="types">Types</label>
+            <input type="text" id="types" name="types[]">
+        </div>
+        <h3>Coordinates</h3>
+        <div>
+            <label for="latitude">latitude</label>
+            <input type="text" id="latitude" name="coordinates[lat]">
+        </div>
+        <div>
+            <label for="longtitude">longtitude</label>
+            <input type="longtitude" id="longtitude" name="coordinates[lng]">
+        </div>
+        <button> Add POI</button>
+    </form>
+    <a href="/pois">Back</a>
+</body>
+
+</html>

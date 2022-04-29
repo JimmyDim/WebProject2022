@@ -2,10 +2,7 @@ const mongoose = require('mongoose')
 //const validator = require('validator')
 
 const poiSchema = new mongoose.Schema({
-    id: {
-        type: String,
-        required: true
-    },
+
     name: {
         type: String,
         required: true,
@@ -37,7 +34,7 @@ const poiSchema = new mongoose.Schema({
         required: true,
     },
     international_phone_number: {
-        type: Number,
+        type: String,
         required: true,
     },
     time_spent: [{
