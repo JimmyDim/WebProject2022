@@ -1,6 +1,9 @@
 const express = require('express')
 const router = new express.Router()
 const Poi = require('../models/poiModel')
+const FileReader = require('filereader');
+const fetch = require("node-fetch");
+var fs = require('fs');
 
 //const fetch = require("node-fetch")
 
@@ -36,7 +39,22 @@ router.post('/newpoi', async (req, res, next) => {
 
 })
 
+//Post POI JSON FILE
+router.post('/addjsonfile', async (req, res, next) => {
 
+    try {
+        const data = await fs.readFileSync('public/starting_pois.json');
+        const jsondata = JSON.parse(data);
+        Poi.insertMany(jsondata).then(() => {
+            res.send('success')
+        }).catch((e) => {
+            res.send(e)
+        });
+    } catch (error) {
+        console.error(`Got an error trying to read the file: ${error.message}`);
+    }
+    console.log("creating poi");
+})
 
 
 
