@@ -2,22 +2,19 @@ const mongoose = require('mongoose')
 //const validator = require('validator')
 
 const poiSchema = new mongoose.Schema({
-    id: {
-        type: String,
-        required: true
-    },
+
     name: {
         type: String,
-        required: true,
+        //required: true,
 
     },
     address: {
         type: String,
-        required: true,
+        // required: true,
     },
     types: [{
         type: String,
-        required: true,
+        // required: true,
 
     }],
     coordinates: {
@@ -30,23 +27,23 @@ const poiSchema = new mongoose.Schema({
     },
     rating: {
         type: Number,
-        required: true,
+        //required: true,
     },
     rating_n: {
         type: Number,
-        required: true,
+        //required: true,
     },
     international_phone_number: {
-        type: Number,
-        required: true,
+        type: String,
+        //required: true,
     },
     time_spent: [{
         type: Number,
-        required: true,
+        // required: true,
     }],
     current_popularity: {
         type: Number,
-        required: true,
+        // required: true,
     },
     populartimes: [{
         name: {

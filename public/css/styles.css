@@ -1,0 +1,42 @@
+.login-form{
+    width: 50%;
+    margin:100px auto;
+}
+
+.change{
+    margin: auto;
+}
+
+.button{
+    margin-top: 15px;
+    width: 150px;
+    float: left;
+
+}
+
+.input-field{
+    margin-top : 17px;
+}
+
+.navbar-title{
+    width :150px;
+    text-align: center;
+}
+
+.alert{
+    margin margin-top: 15px;
+}
+
+.avatar{
+width:200px;
+height:200px;
+}	
+
+
+#map { 
+    height: 500px;
+    width: 90%;
+    margin-top: 20px;
+    margin-right: 150px;
+    margin-left: 150px;
+}
