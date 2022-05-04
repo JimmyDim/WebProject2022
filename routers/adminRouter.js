@@ -2,7 +2,6 @@ const express = require('express')
 const router = new express.Router()
 const Poi = require('../models/poiModel')
 const FileReader = require('filereader');
-const fetch = require("node-fetch");
 var fs = require('fs');
 
 //const fetch = require("node-fetch")

@@ -25,7 +25,6 @@
     "express-session": "^1.17.2",
     "filereader": "^0.10.3",
     "mongoose": "^6.2.10",
-    "node-fetch": "^2.6.7",
     "validator": "^13.7.0"
   }
 }
