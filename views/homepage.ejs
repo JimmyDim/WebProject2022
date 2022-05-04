@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <title>Home Page</title>
   <meta charset="utf-8">
@@ -8,52 +9,52 @@
   <link rel="stylesheet" href="../css/styles.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css">
 
-   <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
-   integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
-   crossorigin=""></script>
+  <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+    integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+    crossorigin=""></script>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+
+  <script src='https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.js'></script>
+  <link href='https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.css' rel='stylesheet' />
+
 </head>
+
 <body>
 
-<nav class="navbar navbar-default">
-  <div class="container-fluid">
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
       <div class="row">
         <div class="col">
-            <div class="navbar-header navbar-title">
-                <a class="navbar-brand navbar-title" href="#">Home</a>
-            </div>
+          <div class="navbar-header navbar-title">
+            <a class="navbar-brand navbar-title" href="#">Home</a>
+          </div>
         </div>
         <div class="col">
-            <ul class="nav navbar-nav">
-                <li class="active"><a href="/homepage">Home</a></li>
-                <li><a href="/statistics">Statistics</a></li>
-                <li><a href="/profile">Profile</a></li>
-                <li><a href="/userLogout">Log Out</a></li>
-            </ul>
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="/homepage">Home</a></li>
+            <li><a href="/statistics">Statistics</a></li>
+            <li><a href="/profile">Profile</a></li>
+            <li><a href="/userLogout">Log Out</a></li>
+          </ul>
         </div>
       </div>
-  </div>
-</nav>
-<div class="container">
-  <h3>Welcome back!</h3>
-<p>This is you home page when you log in!</p>
-  <div class="row">
-    <div class="col-lg-9">
-      <div id="map"></div>
-      <script>
-        var map = L.map('map').setView([51.505, -0.09], 19);
-        L.tileLayer('https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=lGGHo0A1AMAxLBYfCxxf',{
-          attribution: "\u003ca href=\"https://www.maptiler.com/copyright/\" target=\"_blank\"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e",
-        }).addTo(map);
-        var marker = L.marker([51.505, -0.09]).addTo(map)
-      </script>
     </div>
-    
-  </div>
-  
-</div>
+  </nav>
+  <div class="container">
+    <h3>Welcome back!</h3>
+    <p>This is you home page when you log in!</p>
+    <div class="row">
+      <div class="col-lg-9">
+        <div id='map' style='width: 400px; height: 300px;'></div>
+        
+      </div>
+
+    </div>
+    <script src="../javascripts/homePageMap.js"></script>
 
 </body>
+
 </html>
