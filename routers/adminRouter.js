@@ -1,10 +1,31 @@
 const express = require('express')
 const router = new express.Router()
 const Poi = require('../models/poiModel')
+const FileReader = require('filereader');
+const fetch = require("node-fetch");
+var fs = require('fs');
 
 //const fetch = require("node-fetch")
 
-//Post POI
+
+//POST POI
+router.get('/pois/new', async (req, res,) => {
+
+    res.render('pois/new');
+})
+
+router.post('/pois', async (req, res) => {
+    res.send(req.body);
+
+    //const poi = new Poi(req.body);
+    // await poi.save();
+    // res.redirect('poi/${poi._id}');
+})
+
+
+
+
+//Post POI JSON
 router.post('/newpoi', async (req, res, next) => {
     const poi = new Poi(req.body);
     console.log("creating poi");
@@ -14,7 +35,44 @@ router.post('/newpoi', async (req, res, next) => {
     }).catch((e) => {
         res.send(e)
     })
+    //res.redirect('/pois/${poi._id}')
 
 })
+
+//Post POI JSON FILE
+router.post('/addjsonfile', async (req, res, next) => {
+
+    try {
+        const data = await fs.readFileSync('public/starting_pois.json');
+        const jsondata = JSON.parse(data);
+        Poi.insertMany(jsondata).then(() => {
+            res.send('success')
+        }).catch((e) => {
+            res.send(e)
+        });
+    } catch (error) {
+        console.error(`Got an error trying to read the file: ${error.message}`);
+    }
+    console.log("creating poi");
+})
+
+
+
+//GET ALL POIS
+router.get('/pois', async (req, res,) => {
+
+    const pois = await Poi.find({})
+    res.render('pois/index', { pois });
+})
+
+
+//GET POI BY ID
+router.get('/pois/:id', async (req, res,) => {
+    const { id } = req.params;
+    const poi = await Poi.findById(id)
+    res.render('pois/show', { poi });
+})
+
+
 
 module.exports = router;

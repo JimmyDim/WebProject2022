@@ -1,36 +1,31 @@
 {
-  "name": "WebProject2022",
-  "version": "1.0.0",
-  "description": "This is the project for the CEID Web Development Course.",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/JimmyDim/WebProject2022.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/JimmyDim/WebProject2022/issues"
-  },
-  "homepage": "https://github.com/JimmyDim/WebProject2022#readme",
-  "dependencies": {
-    "node-fetch": "^3.2.3",
-    "bcryptjs": "^2.4.3",
-    "connect": "^3.7.0",
-    "connect-flash": "^0.1.1",
-    "ejs": "^3.1.6",
-    "express": "^4.17.3",
-    "express-session": "^1.17.2",
-    "mongoose": "^6.3.0",
-    "nodemon": "^2.0.15",
-    "passport": "^0.5.2",
-    "passport-local": "^1.0.0",
-    "passport-local-mongoose": "^7.0.0",
-    "router": "^1.3.6",
-    "validator": "^13.7.0"
+    "name": "WebProject2022",
+    "version": "1.0.0",
+    "description": "This is the project for the CEID Web Development Course.",
+    "main": "index.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/JimmyDim/WebProject2022.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+      "url": "https://github.com/JimmyDim/WebProject2022/issues"
+    },
+    "homepage": "https://github.com/JimmyDim/WebProject2022#readme",
+    "dependencies": {
+      "bcryptjs": "^2.4.3",
+      "connect-flash": "^0.1.1",
+      "ejs": "^3.1.6",
+      "express": "^4.17.3",
+      "express-session": "^1.17.2",
+      "filereader": "^0.10.3",
+      "mongoose": "^6.2.10",
+      "node-fetch": "^2.6.7",
+      "validator": "^13.7.0"
+    }
   }
-}
