@@ -13,25 +13,12 @@ router.get('/pois/new', async (req, res,) => {
     res.render('pois/new');
 })
 
-router.post('/pois', async (req, res) => {
-    res.send(req.body);
 
-    //const poi = new Poi(req.body);
-    // await poi.save();
-    // res.redirect('poi/${poi._id}');
-})
-
-
-
-
-//Post POI JSON
-router.post('/newpoi', async (req, res, next) => {
+router.post('/newpoi', async (req, res) => {
     const poi = new Poi(req.body);
     console.log("creating poi");
 
-    poi.save().then(() => {
-        res.send(poi)
-    }).catch((e) => {
+    poi.save().catch((e) => {
         res.send(e)
     })
     //res.redirect('/pois/${poi._id}')

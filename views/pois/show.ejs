@@ -2,22 +2,74 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Show</title>
+    <title>Profile</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 
 <body>
-    <h1>
-        <%= poi.name%>
-    </h1>
-    <h2>
-        <%= poi.address%>
-    </h2>
-    <footer>
-        <a href="/pois">All Points Of Interest</a>
-    </footer>
+    <div class="container bootstrap snippets bootdey">
+        <h1 class="text-primary">
+            <%=poi.name%>
+        </h1>
+        <hr>
+        <div class="row">
+            <!-- edit form column -->
+            <div class="col-lg-9 personal-info">
+                <h3>Details</h3>
+                <hr>
+                <div class="row input-field">
+                    <label class="col-lg-2 control-label" for="address">Address</label>
+                    <div class="col-lg-5">
+                        <div>
+                            <%=poi.address %>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row input-field">
+                    <label class="col-lg-2 control-label" for="lat">Coordinates</label>
+                    <div class="col-lg-5">
+                        <div>
+                            <%=poi.coordinates.lat%>, <%=poi.coordinates.lng%>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row input-field">
+                    <label class="col-lg-2 control-label" for="types">Tags</label>
+                    <div class="col-lg-5">
+                        <div>
+                            <%=poi.types%>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <h3>Rating</h3>
+                <hr>
+                <div class="row input-field">
+                    <label class="col-lg-2 control-label" for="">Rating Score</label>
+                    <div class="col-lg-5">
+                        <div>
+                            <%=poi.rating%>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row input-field">
+                    <label class="col-lg-2 control-label" for="">Number of Reviews</label>
+                    <div class="col-lg-5">
+                        <div>
+                            <%=poi.rating_n%>
+                        </div>
+                    </div>
+                </div>
+                <br>
+            </div>
+        </div>
 </body>
-
-</html>
