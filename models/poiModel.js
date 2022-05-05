@@ -12,11 +12,11 @@ const poiSchema = new mongoose.Schema({
         type: String,
         // required: true,
     },
-    types: [{
-        type: String,
+    types: {
+        type: [String],
         // required: true,
 
-    }],
+    },
     coordinates: {
         lat: {
             type: Number
@@ -32,6 +32,17 @@ const poiSchema = new mongoose.Schema({
     rating_n: {
         type: Number,
         //required: true,
+    },
+    geometry: {
+        type: {
+            type: String, // Don't do `{ location: { type: String } }`
+            enum: ['Point'], // 'location.type' must be 'Point'
+            //required: true
+        },
+        coordinates: {
+            type: [Number],
+            required: true
+        }
     },
     international_phone_number: {
         type: String,

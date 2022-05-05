@@ -1,39 +1,96 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New POI</title>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Sign Up</title>
+    <meta name="description" content="">
+    <meta name="viewport" , initial-scale=1">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 
 <body>
-    <form action="/pois" method="POST">
-        <div>
-            <label for="name">Name</label>
-            <input type="text" id="name" name="name">
+    <div class="container">
+        <div class="wrapper login-form"" >
+        <h1>Add Custom Point of Interest</h1>
+<hr>
+        <div class=" col-lg-9 personal-info">
+            <form action="/newpoi" method="post">
+                <h3>Details</h3>
+                <div class="row input-field">
+                    <label class="col-lg-2 control-label" for="username">Name</label>
+                    <div class="col-lg-5">
+                        <input type="text" name="name" id="name" class="form-control col-lg-6"
+                            placeholder="Enter POI name">
+                    </div>
+                </div>
+                <br>
+                <div class="row input-field">
+                    <label class="col-lg-2 control-label" for="address">Address</label>
+                    <div class="col-lg-5">
+                        <input type="text" name="address" id="address" class="form-control col-lg-6"
+                            placeholder="Enter address">
+                    </div>
+                </div>
+                <br>
+                <h3>Coordinates</h3>
+                <div class="row">
+                    <label class="col-lg-2 control-label" for="latitude">Latitude</label>
+                    <div class="col-lg-5">
+                        <input type="text" name="coordinates[lat]" id="latitude" class="form-control col-lg-6"
+                            placeholder="Enter latitude">
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <label class="col-lg-2 control-label" for="longtitude">Longtitude</label>
+                    <div class="col-lg-5">
+                        <input type="text" name="coordinates[lng]" id="longtitude" class="form-control col-lg-6"
+                            placeholder="Enter longtitude">
+                    </div>
+                </div>
+                <br>
+                <h3>Rating</h3>
+                <div class="row">
+                    <label class="col-lg-2 control-label" for="rating">Rating Score</label>
+                    <div class="col-lg-5">
+                        <input type="text" name="rating" id="rating" class="form-control col-lg-6"
+                            placeholder="Enter custom rating score">
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <label class="col-lg-2 control-label" for="rating_n">Reviews</label>
+                    <div class="col-lg-5">
+                        <input type="text" name="rating_n" id="rating_n" class="form-control col-lg-6"
+                            placeholder="Enter number">
+                    </div>
+                </div>
+                <br>
+                <div class="row input-field">
+                    <div class="col-lg-6">
+                        <button class="btn btn-primary btn-block mb-4 button" href="/pois/index"
+                            role="button">Save</button>
+                    </div>
+                </div>
+                <div class="row input-field">
+                    <div class="col-lg-6">
+                        <button class="btn btn-primary btn-block mb-4 button" onclick="location.href='/pois';"
+                            type="button">Back</button>
+                    </div>
+                </div>
+
+
+            </form>
         </div>
-        <div>
-            <label for="address">Address</label>
-            <input type="text" id="address" name="address">
-        </div>
-        <div>
-            <label for="types">Types</label>
-            <input type="text" id="types" name="types[]">
-        </div>
-        <h3>Coordinates</h3>
-        <div>
-            <label for="latitude">latitude</label>
-            <input type="text" id="latitude" name="coordinates[lat]">
-        </div>
-        <div>
-            <label for="longtitude">longtitude</label>
-            <input type="longtitude" id="longtitude" name="coordinates[lng]">
-        </div>
-        <button> Add POI</button>
-    </form>
-    <a href="/pois">Back</a>
+    </div>
+    </div>
 </body>
 
 </html>
