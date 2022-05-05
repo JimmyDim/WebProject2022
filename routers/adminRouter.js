@@ -16,6 +16,7 @@ router.get('/pois/new', async (req, res,) => {
 
 router.post('/newpoi', async (req, res) => {
     const poi = new Poi(req.body);
+    poi.geometry.coordinates = [poi.coordinates.lat, poi.coordinates.lng];
     console.log("creating poi");
 
     poi.save().catch((e) => {
