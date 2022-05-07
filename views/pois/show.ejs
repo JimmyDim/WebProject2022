@@ -70,6 +70,25 @@
                     </div>
                 </div>
                 <br>
+                <div class="row input-field">
+                    <div class="col-lg-6">
+                        <a class="btn btn-primary btn-block mb-4 button" href="/pois/<%=poi._id%>/edit">Edit</a>
+                    </div>
+                </div>
+                <br>
+                <form action="/pois/<%=poi._id%>?_method=DELETE" method="post">
+                    <div class="row input-field">
+                        <div class="col-lg-6">
+                            <button class="btn btn-primary btn-block mb-4 button" role="button">Delete</button>
+                        </div>
+                    </div>
+                </form>
+                <br>
+                <div class="row input-field">
+                    <div class="col-lg-6">
+                        <a class="btn btn-primary btn-block mb-4 button" href="/pois">Back</a>
+                    </div>
+                </div>
             </div>
         </div>
 </body>

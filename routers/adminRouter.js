@@ -3,6 +3,8 @@ const router = new express.Router()
 const Poi = require('../models/poiModel')
 const FileReader = require('filereader');
 var fs = require('fs');
+const methodOverride = require('method-override');
+const req = require('express/lib/request');
 
 //const fetch = require("node-fetch")
 
@@ -20,9 +22,8 @@ router.post('/newpoi', async (req, res) => {
     poi.geometry.type = 'Point';
     console.log("creating poi");
 
-    poi.save().catch((e) => {
-        res.send(e)
-    })
+    poi.save();
+    res.redirect('/pois/' + poi._id);
     //res.redirect('/pois/${poi._id}')
 
 })
@@ -61,6 +62,30 @@ router.get('/pois/:id', async (req, res,) => {
     res.render('pois/show', { poi });
 })
 
+
+//EDIT POI
+
+router.get('/pois/:id/edit', async (req, res) => {
+    const { id } = req.params;
+    const poi = await Poi.findById(id)
+    res.render('pois/edit', { poi });
+})
+
+router.put('/pois/:id', async (req, res) => {
+    const { id } = req.params;
+    const poi = await Poi.findByIdAndUpdate(id, { ...req.body });
+    res.redirect('/pois/' + poi._id);
+
+})
+
+
+//DELETE POI
+router.delete('/pois/:id', async (req, res) => {
+    const { id } = req.params;
+    await Poi.findByIdAndDelete(id);
+    res.redirect('/pois');
+
+})
 
 
 module.exports = router;
