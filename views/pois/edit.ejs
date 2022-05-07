@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>New Poi</title>
+    <title>Edit Poi</title>
     <meta name="description" content="">
     <meta name="viewport" , initial-scale=1">
 
@@ -18,16 +18,15 @@
 <body>
     <div class="container">
         <div class="wrapper login-form"" >
-        <h1>Add Custom Point of Interest</h1>
+        <h1>Edit Point of Interest</h1>
 <hr>
         <div class=" col-lg-9 personal-info">
-            <form action="/newpoi" method="post">
+            <form action="/pois/<%=poi._id%>?_method=PUT" method="post">
                 <h3>Details</h3>
                 <div class="row input-field">
                     <label class="col-lg-2 control-label" for="username">Name</label>
                     <div class="col-lg-5">
-                        <input type="text" name="name" id="name" class="form-control col-lg-6"
-                            placeholder="Enter POI name">
+                        <input type="text" name="name" id="name" class="form-control col-lg-6" value="<%=poi.name%>">
                     </div>
                 </div>
                 <br>
@@ -35,7 +34,7 @@
                     <label class="col-lg-2 control-label" for="address">Address</label>
                     <div class="col-lg-5">
                         <input type="text" name="address" id="address" class="form-control col-lg-6"
-                            placeholder="Enter address">
+                            value="<%=poi.address%>">
                     </div>
                 </div>
                 <br>
@@ -43,7 +42,7 @@
                     <label class="col-lg-2 control-label" for="address">Tags</label>
                     <div class="col-lg-5">
                         <input type="array" name="types[]" id="types" class="form-control col-lg-6"
-                            placeholder="Enter address">
+                            value="<%=poi.types%>">
                     </div>
                 </div>
                 <br>
@@ -52,7 +51,7 @@
                     <label class="col-lg-2 control-label" for="latitude">Latitude</label>
                     <div class="col-lg-5">
                         <input type="text" name="coordinates[lat]" id="latitude" class="form-control col-lg-6"
-                            placeholder="Enter latitude">
+                            value="<%=poi.coordinates.lat%>">
                     </div>
                 </div>
                 <br>
@@ -60,7 +59,7 @@
                     <label class="col-lg-2 control-label" for="longtitude">Longtitude</label>
                     <div class="col-lg-5">
                         <input type="text" name="coordinates[lng]" id="longtitude" class="form-control col-lg-6"
-                            placeholder="Enter longtitude">
+                            value="<%=poi.coordinates.lng%>">
                     </div>
                 </div>
                 <br>
@@ -69,7 +68,7 @@
                     <label class="col-lg-2 control-label" for="rating">Rating Score</label>
                     <div class="col-lg-5">
                         <input type="text" name="rating" id="rating" class="form-control col-lg-6"
-                            placeholder="Enter custom rating score">
+                            value="<%=poi.rating%>">
                     </div>
                 </div>
                 <br>
@@ -77,20 +76,20 @@
                     <label class="col-lg-2 control-label" for="rating_n">Reviews</label>
                     <div class="col-lg-5">
                         <input type="text" name="rating_n" id="rating_n" class="form-control col-lg-6"
-                            placeholder="Enter number">
+                            value="<%=poi.rating_n%>">
                     </div>
                 </div>
                 <br>
                 <div class="row input-field">
                     <div class="col-lg-6">
-                        <button class="btn btn-primary btn-block mb-4 button" href="/pois/index"
-                            role="button">Save</button>
+                        <button class="btn btn-primary btn-block mb-4 button" role="button">Update</button>
                     </div>
                 </div>
+                <br>
                 <div class="row input-field">
                     <div class="col-lg-6">
-                        <button class="btn btn-primary btn-block mb-4 button" onclick="location.href='/pois';"
-                            type="button">Back</button>
+                        <a class="btn btn-primary btn-block mb-4 button" href="/pois/<%=poi._id%>"
+                            type="button">Back</a>
                     </div>
                 </div>
 
