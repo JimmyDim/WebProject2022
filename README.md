@@ -63,6 +63,17 @@ This is the project for the CEID Web Development Course.
     4. Test 
     5. Beautify
 
+     Περιγραφή: Επιλογή μέσω κουμπιού στο μενού του χρήστη ότι είναι θετικός. Αυτο κάνει τα εξής:
+
+     -Έλεγχο current_datetime > positive_datetime + 14 (λόγω εκφώνησης)
+     -Αν οκ, αλλαγή πεδίου user.positive = true και positive_datetime = current_datetime
+
+     -Αναζήτηση στον πίνακα visits για όλα τα visit με το τρέχον userId τις τελευταίες 7 μέρες (στα visit υπάρχει πεδίο visit.createdOn για χρόνο) 
+     -Βάζουμε στα visit που ισχύει visit.positive = true; //Αυτό τα ορίζει σαν επισκέψεις κρούσματος)
+
+     (Τα δυο τελευταία τα κάνουμε εδώ για να μας βοηθήσουν σε άλλα ερωτήματα)
+
+
 5. "Πιθανή επαφή με κρούσμα" (`amisick.ejs`)
     * Λίστα με τα POIs που επισκέφτηκε
     1. Εύρεση/σχεδιασμός κατάλληλου Layout σελίδας
@@ -70,6 +81,14 @@ This is the project for the CEID Web Development Course.
     3. Frontend 
     4. Test 
     5. Beautify
+
+    Περιγραφή: Κουμπί που κάνει τα εξής:
+
+    -Αναζήτηση στα visit για όλα τα visits με το τρέχον userId τις τελευταίες 7 μέρες (στα visits υπάρχει πεδίο visit.createdOn). 
+
+    -για κάθε visit, αναζητούμε πάλι στον πίνακα visits για άλλα visit με ίδιο poiId (δηλαδή μέρος) και με visit.CreatedOn (datetime) +-2ώρες. Στέλνουμε πίσω τα visits που βρήκαμε.
+
+    -Στο frontend μπορούμε να του πουμε πλέον πού και πότε ήρθε σε πιθανή επαφή με κρούσμα, καθώς και πόσες φορές την τελευταία εβδομάδα. 
 
 6. "Επεξεργασία προφίλ" (`accountsettings.ejs`)
     * Αλλαγή username/password

@@ -1,6 +1,8 @@
 const express = require('express')
 const router = new express.Router()
 const Poi = require('../models/poiModel')
+const Visit = require('../models/visitModel')
+const User = require('../models/user');
 const FileReader = require('filereader');
 var fs = require('fs');
 const methodOverride = require('method-override');
@@ -9,7 +11,7 @@ const req = require('express/lib/request');
 //const fetch = require("node-fetch")
 
 
-//POST POI
+//CREATE POI
 router.get('/pois/new', async (req, res,) => {
 
     res.render('pois/new');
@@ -28,7 +30,7 @@ router.post('/newpoi', async (req, res) => {
 
 })
 
-//Post POI JSON FILE
+//INSERT POI JSON FILE
 router.post('/addjsonfile', async (req, res, next) => {
 
     try {
@@ -85,6 +87,17 @@ router.delete('/pois/:id', async (req, res) => {
     await Poi.findByIdAndDelete(id);
     res.redirect('/pois');
 
+})
+
+//CREATE VISIT (and check if user is positive)
+
+router.post('/visit', async (req, res) => {
+    const visit = new Visit(req.body);
+    const user = await User.findById(visit.userId);
+    if (user.positive) visit.positive = true;
+    else visit.positive = false;
+
+    visit.save();
 })
 
 
