@@ -47,24 +47,40 @@
                     <div class="row input-field">
                         <label class="col-lg-2 control-label" for="username">Username</label>
                         <div class="col-lg-5">
-                            <div class="well well-sm form-control col-lg-6"><%=username %></div>
+                            <div class="well well-sm form-control col-lg-6"><center><%=username %></center></div>
                         </div>
                     </div>
                     <div class="row">
                       <label class="col-lg-2 control-label">Email</label>
                       <div class="col-lg-5">
-                        <div class="well well-sm form-control col-lg-6"><%=email %></div>
+                        <div class="well well-sm form-control col-lg-6"><center><%=email %></center></div>
                       </div>
                     </div>
                     <div class="row">
                         <label class="col-lg-2 control-label">Password</label>
                         <div class="col-lg-5">
-                            <div class="well well-sm form-control col-lg-6">*******</div>
+                            <div class="well well-sm form-control col-lg-6"><center>*******</center></div>
                         </div>
                     </div> 
                     <div class="row">
                         <div class="col-lg-6">
                             <a class="btn btn-primary button" href="/editProfile" role="button">Update Credentials</a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-9 title">
+                            <h3>Covid Infected</h3>
+                        </div>
+                    </div>
+                    <div class="row input-field">
+                        <label class="col-lg-2 control-label" for="covid_infected">Infected</label>
+                        <div class="col-lg-5">
+                            <div class="well well-sm form-control col-lg-6"><center><%=positive%></center> </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <a class="btn btn-primary button" href="/editCovidStatus" role="button">Update Covid Status</a>
                         </div>
                     </div>
             </div>

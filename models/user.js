@@ -27,7 +27,8 @@ const userSchema = new mongoose.Schema({
         trim: true
     },
     positive: {
-        type: Boolean
+        type: String,
+        default: "negative"
     },
     positive_datetime: {
         type: Date
