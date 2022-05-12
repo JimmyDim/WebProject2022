@@ -66,13 +66,24 @@ router.get('/userLogout', requiredLogin, (req, res)=>{
     res.redirect('/userLogin');
 })
 
-//UPDATE USER
 router.get('/profile', requiredLogin, async(req, res)=>{
     user_id = req.session.user_id;
     const foundUser = await User.findById(user_id);
     const username = foundUser.username;
     const email = foundUser.email;
-    res.render('profile.ejs', {username: username, email : email});
+    const covid_infected = foundUser.positive;
+    //Update the Infected by covid to 'negative' value, after 14 days.
+    if(covid_infected == "positive" ){
+        const current_date = new Date();
+        const diffInDays = Math.abs((current_date - foundUser.positive_datetime)/(1000*60*60*24));
+        if(diffInDays >= 14){
+            const filter = {_id : user_id};
+            const update = {positive : "negative", positive_datetime:null}
+            await User.findOneAndUpdate(filter, update);
+        }
+        
+    }
+    res.render('profile.ejs', {username: username, email : email, positive:covid_infected});
 })
 
 router.get('/editProfile', requiredLogin, async(req, res)=>{
@@ -99,20 +110,17 @@ router.post('/editProfile', requiredLogin, async(req, res)=>{
     res.redirect('/profile');
 })
 
-
-//FUTURE ROUTERS
-router.get('/adminLogin', (req,res)=>{
-    res.render('adminLogin.ejs');
+router.get('/editCovidStatus', requiredLogin, (req, res)=>{
+    res.render('editCovidStatus.ejs');
 })
 
-router.get('/dataAdministration', (req,res)=>{
-    res.render('dataAdministration.ejs')
+router.post('/editCovidStatus', requiredLogin,  async(req, res)=>{
+    user_id = req.session.user_id;
+    const filter = {_id : user_id};
+    const {covid_infected, date} = req.body;
+    const update = {positive : covid_infected, positive_datetime:new Date(date)}
+    await User.findOneAndUpdate(filter, update);
+    res.redirect('/profile');
 })
-
-router.get('/statistics',requiredLogin, (req, res)=>{
-    res.render('statistics.ejs')
-})
-
-
 
 module.exports = router;
