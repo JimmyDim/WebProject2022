@@ -7,16 +7,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="../css/styles.css">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css">
-
-  <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
-    integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
-    crossorigin=""></script>
-
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-
-
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>  
+  
   <script src='https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.js'></script>
   <link href='https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.css' rel='stylesheet' />
 
@@ -49,12 +42,35 @@
     <div class="row">
       <div class="col-lg-9">
         <div id='map' style='width: 400px; height: 300px;'></div>
-        
+        <% for (let poi of pois) {%>
+          <li><%= poi.geometry.coordinates %></li>
+        <% }%>
+        <% const lala=pois; %> 
       </div>
 
     </div>
-    <script src="../javascripts/homePageMap.js"></script>
+    <script>
+     const s= <%= lala %>
+     console.log(s);
+      let bar = 5 ; 
+      console.log("Bar is saved");
+      const poi = <%- pois %>
+      console.log(poi.geometry.coordinates);
+      for (const key in pois) {
+      console.log(`${key}: ${pois[key]}`);
+        }
+      console.log(`${poi[coordinates]}`);
 
-</body>
+      mapboxgl.accessToken = 'pk.eyJ1IjoibWFpcnlzIiwiYSI6ImNsMjR5OTQwazA0bTAzYmxoMTlzd210M3YifQ.yCuHMj88Bw6d0_3RYlprrg';
+const map = new mapboxgl.Map({
+container: 'map',
+style: 'mapbox://styles/mapbox/streets-v11',
+center: [poi[0].geometry.coordinates],
+zoom: 3
+});
+
+      </script>
+   
+    </body>
 
 </html>
