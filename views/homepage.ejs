@@ -50,26 +50,10 @@
 
     </div>
     <script>
-     const s= <%= lala %>
-     console.log(s);
-      let bar = 5 ; 
-      console.log("Bar is saved");
-      const poi = <%- pois %>
-      console.log(poi.geometry.coordinates);
-      for (const key in pois) {
-      console.log(`${key}: ${pois[key]}`);
-        }
-      console.log(`${poi[coordinates]}`);
+     const s= <%=lala[0].coordinates%>
+     console.log(s); 
 
-      mapboxgl.accessToken = 'pk.eyJ1IjoibWFpcnlzIiwiYSI6ImNsMjR5OTQwazA0bTAzYmxoMTlzd210M3YifQ.yCuHMj88Bw6d0_3RYlprrg';
-const map = new mapboxgl.Map({
-container: 'map',
-style: 'mapbox://styles/mapbox/streets-v11',
-center: [poi[0].geometry.coordinates],
-zoom: 3
-});
-
-      </script>
+    </script>
    
     </body>
 
