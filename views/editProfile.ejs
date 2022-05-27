@@ -31,6 +31,11 @@
             </div>
         </div>
     </nav>
+    <%if(messages.length){%>
+        <div class="alert alert-warning alert" role="alert">
+          <%= messages %>
+        </div>
+        <%}%>
     <div class="container bootstrap snippets bootdey">
         <h1 class="text-primary">Edit Profile</h1>
         <hr> 
