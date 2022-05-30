@@ -20,7 +20,7 @@ router.get('/pois/new', async (req, res,) => {
 
 router.post('/newpoi', async (req, res) => {
     const poi = new Poi(req.body);
-    poi.geometry.coordinates = [poi.coordinates.lat, poi.coordinates.lng];
+    poi.geometry.coordinates = [poi.coordinates.lng, poi.coordinates.lat];
     poi.geometry.type = 'Point';
     console.log("creating poi");
 

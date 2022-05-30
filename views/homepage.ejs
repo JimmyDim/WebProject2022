@@ -8,8 +8,8 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="../css/styles.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>  
-  
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
   <script src='https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.js'></script>
   <link href='https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.css' rel='stylesheet' />
 
@@ -43,34 +43,18 @@
       <div class="col-lg-9">
         <div id='map' style='width: 400px; height: 300px;'></div>
         <% for (let poi of pois) {%>
-          <li><%= poi.geometry.coordinates %></li>
-        <% }%>
-        <% const lala=pois; %> 
+          <li>
+            <%= poi.geometry.coordinates %>
+          </li>
+          <% }%>
       </div>
 
     </div>
     <script>
-     const s= <%= lala %>
-     console.log(s);
-      let bar = 5 ; 
-      console.log("Bar is saved");
-      const poi = <%- pois %>
-      console.log(poi.geometry.coordinates);
-      for (const key in pois) {
-      console.log(`${key}: ${pois[key]}`);
-        }
-      console.log(`${poi[coordinates]}`);
+    const pois = { features: <%- JSON.stringify(pois) %>}
+    </script>
 
-      mapboxgl.accessToken = 'pk.eyJ1IjoibWFpcnlzIiwiYSI6ImNsMjR5OTQwazA0bTAzYmxoMTlzd210M3YifQ.yCuHMj88Bw6d0_3RYlprrg';
-const map = new mapboxgl.Map({
-container: 'map',
-style: 'mapbox://styles/mapbox/streets-v11',
-center: [poi[0].geometry.coordinates],
-zoom: 3
-});
-
-      </script>
-   
-    </body>
+<script src="../javascripts/homePageMap.js"></script>
+</body>
 
 </html>
