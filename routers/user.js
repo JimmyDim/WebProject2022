@@ -92,23 +92,45 @@ router.get('/editProfile', requiredLogin, async(req, res)=>{
     user_id = req.session.user_id;
     const foundUser = await User.findById(user_id);
     const email = foundUser.email;
-    res.render('editProfile.ejs', {email : email});
+    res.render('editProfile.ejs', {email : email, messages: req.flash('failedLogin')});
 })
 
 router.post('/editProfile', requiredLogin, async(req, res)=>{
     user_id = req.session.user_id;
     const {username, password} = req.body;
-    const isPasswordValid = await User.passwordValidation(password);
-    
-    if(isPasswordValid != null){
-        console.log("We 've got an error")
-        return res.status(400).send(isPasswordValid);
-    }
+    if(password==""){
+        const filter = {_id : user_id};
+        const update = {username : username}
+        await User.findOneAndUpdate(filter, update);
 
-    const filter = {_id : user_id};
-    hashed_password = await bcrypt.hash(password, 8);
-    const update = {username : username, password: hashed_password}
-    await User.findOneAndUpdate(filter, update);
+    }else if(username==""){
+        const isPasswordValid = await User.passwordValidation(password);
+    
+        if(isPasswordValid != null){
+             req.flash('failedLogin', "Password must contain at least: 1) 8 letters incl 1 capital 2) 1 number 3) 1 symbol. Try again!");
+             return res.redirect('/editProfile');
+        }
+
+        const filter = {_id : user_id};
+        hashed_password = await bcrypt.hash(password, 8);
+        const update = {password : hashed_password}
+        await User.findOneAndUpdate(filter, update);
+    }else{
+        const isPasswordValid = await User.passwordValidation(password);
+    
+        if(isPasswordValid != null){
+             req.flash('failedLogin', "Password must contain at least: 1) 8 letters incl 1 capital 2) 1 number 3) 1 symbol. Try again!");
+             return res.redirect('/editProfile');
+        }
+
+        const filter = {_id : user_id};
+        hashed_password = await bcrypt.hash(password, 8);
+        const update = {username : username, password: hashed_password}
+        await User.findOneAndUpdate(filter, update);
+        
+    }
+    
+
     res.redirect('/profile');
 })
 
