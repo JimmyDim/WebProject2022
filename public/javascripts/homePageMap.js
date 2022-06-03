@@ -1,17 +1,30 @@
-mapboxgl.accessToken = 'pk.eyJ1IjoibWFpcnlzIiwiYSI6ImNsMjR5OTQwazA0bTAzYmxoMTlzd210M3YifQ.yCuHMj88Bw6d0_3RYlprrg';
+mapboxgl.accessToken = 'pk.eyJ1IjoibWFpcnlzIiwiYSI6ImNsM3JyaXVvNDA4a3IzY3A2ZG54Z3JrejQifQ.JATyxVTD6yYWOUb3z4F5Yg';
 const map = new mapboxgl.Map({
 container: 'map',
 style: 'mapbox://styles/mapbox/streets-v11',
-center: [12.550343, 55.665957],
-zoom: 8
+center: [21.7259359, 38.2376827],
+zoom: 10
 });
 
-// Create a default Marker and add it to the map.
-const marker1 = new mapboxgl.Marker()
-.setLngLat([12.554729, 55.70651])
-.addTo(map);
- 
-// Create a default Marker, colored black, rotated 45 degrees.
-const marker2 = new mapboxgl.Marker({ color: 'black', rotation: 45 })
-.setLngLat([12.65147, 55.608166])
-.addTo(map); 
+console.log(pois);
+console.log(pois.features[0].geometry.coordinates);
+console.log(pois.features[0].geometry.coordinates[0]);
+
+let len = pois.features.length;
+console.log(len);
+
+//change coordinates order: first lng second lat 
+for (let i=0; i<len; i++) {
+  let temp = pois.features[i].geometry.coordinates[0];
+  pois.features[i].geometry.coordinates[0] = pois.features[i].geometry.coordinates[1];
+  pois.features[i].geometry.coordinates[1] = temp;
+
+  let marker = new mapboxgl.Marker()
+  .setLngLat(pois.features[i].geometry.coordinates)
+  .addTo(map); // add the marker to the map
+  }
+
+
+// const popup = new mapboxgl.Popup({ offset: 25 }).setText(
+//     'Construction on the Washington Monument began in 1848.'
+//     );

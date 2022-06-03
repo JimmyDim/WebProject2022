@@ -7,15 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="../css/styles.css">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css">
-
-  <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
-    integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
-    crossorigin=""></script>
-
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-
 
   <script src='https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.js'></script>
   <link href='https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.css' rel='stylesheet' />
@@ -49,12 +42,19 @@
     <div class="row">
       <div class="col-lg-9">
         <div id='map' style='width: 400px; height: 300px;'></div>
-        
+        <% for (let poi of pois) {%>
+          <li>
+            <%= poi.geometry.coordinates %>
+          </li>
+          <% }%>
       </div>
 
     </div>
-    <script src="../javascripts/homePageMap.js"></script>
+    <script>
+    const pois = { features: <%- JSON.stringify(pois) %>}
+    </script>
 
+<script src="../javascripts/homePageMap.js"></script>
 </body>
 
 </html>

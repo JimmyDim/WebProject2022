@@ -3,6 +3,7 @@ const express = require('express');
 const { append } = require('express/lib/response');
 const User = require('../models/user');
 const router = new express.Router();
+const Poi = require('../models/poiModel');
 
 //Middleware func checks if the user is logged in. In other case redirect in the login page
 const requiredLogin = (req, res, next)=>{
@@ -15,9 +16,10 @@ router.get('/', (req, res)=>{
     res.redirect('/userLogin');
 })
 
-router.get('/homepage',requiredLogin, (req,res)=>{
-    res.render('homepage.ejs');
-})
+router.get('/homepage', async (req,res)=>{
+    const pois = await Poi.find({});
+    res.render('homepage.ejs', { pois })
+});
 
 //USER SIGN UP
 router.get('/userSignUp', (req,res)=>{
