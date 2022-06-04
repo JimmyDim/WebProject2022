@@ -7,6 +7,7 @@ const FileReader = require('filereader');
 var fs = require('fs');
 const methodOverride = require('method-override');
 const req = require('express/lib/request');
+const poiTable = require('../public/starting_pois_original.json');
 
 //const fetch = require("node-fetch")
 
@@ -20,18 +21,36 @@ router.get('/pois/new', async (req, res,) => {
 
 router.post('/newpoi', async (req, res) => {
     const poi = new Poi(req.body);
-    poi.geometry.coordinates = [poi.coordinates.lng, poi.coordinates.lat];
+    poi.geometry.coordinates = [poi.coordinates.lat, poi.coordinates.lng];
     poi.geometry.type = 'Point';
     console.log("creating poi");
 
     poi.save();
     res.redirect('/pois/' + poi._id);
-    //res.redirect('/pois/${poi._id}')
-
 })
 
+
+//INSERT POIS
+
+router.post('/poiTable', async (req, res,) => {
+
+    for (let i = 0; i < 150; i++) {
+        const poi = new Poi(poiTable[i]);
+
+        poi.geometry.type = 'Point';
+        poi.geometry.coordinates = [poi.coordinates.lng, poi.coordinates.lat];
+        poi.type = 'Feature';
+        poi.properties.title = 'MapboxSF';
+        //console.log(poi);
+        await poi.save();
+
+    }
+    res.send('ok')
+})
+
+
 //INSERT POI JSON FILE
-router.post('/addjsonfile', async (req, res, next) => {
+/*router.post('/addjsonfile', async (req, res, next) => {
 
     try {
         const data = await fs.readFileSync('public/starting_pois.json');
@@ -46,7 +65,7 @@ router.post('/addjsonfile', async (req, res, next) => {
     }
     console.log("creating poi");
 })
-
+*/
 
 
 //GET ALL POIS
