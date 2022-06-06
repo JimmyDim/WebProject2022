@@ -3,6 +3,28 @@ const mongoose = require('mongoose')
 
 const poiSchema = new mongoose.Schema({
 
+    type: {
+        type: String, 
+            enum: ['Feature']
+            //required: true
+    },
+    properties: {
+        description: {
+            type: String,
+        }
+        //required: true,
+    },
+    geometry: {
+        type: {
+            type: String, // Don't do `{ location: { type: String } }`
+            enum: ['Point'], // 'location.type' must be 'Point'
+            //required: true
+        },
+        coordinates: {
+            type: [Number],
+            required: true
+        }
+    },
     name: {
         type: String,
         //required: true,
@@ -17,14 +39,6 @@ const poiSchema = new mongoose.Schema({
         // required: true,
 
     },
-    coordinates: {
-        lat: {
-            type: Number
-        },
-        lng: {
-            type: Number
-        }
-    },
     rating: {
         type: Number,
         //required: true,
@@ -33,29 +47,7 @@ const poiSchema = new mongoose.Schema({
         type: Number,
         //required: true,
     },
-    type: {
-        type: String,
-        //required: true,
-
-    },
-    geometry: {
-        type: {
-            type: String, // Don't do `{ location: { type: String } }`
-            enum: ['Point'], // 'location.type' must be 'Point'
-            //required: true
-        },
-        coordinates: {
-            type: [Number],
-            required: true
-        }
-    },
-    properties: {
-        title: {
-            type: String,
-        }
-        //required: true,
-    },
-    international_phone_number: {
+       international_phone_number: {
         type: String,
         //required: true,
     },

@@ -41,7 +41,7 @@
     <p>This is you home page when you log in!</p>
     <div class="row">
       <div class="col-lg-9">
-        <div id='map' style='width: 400px; height: 300px;'></div>
+        <div id='map' style='width: 1000px; height: 400px;'></div>
         <% for (let poi of pois) {%>
           <li>
             <%= poi.geometry.coordinates %>
@@ -51,7 +51,7 @@
 
     </div>
     <script>
-    const pois = { features: <%- JSON.stringify(pois) %>}
+    const pois = { type:'FeatureCollection', features: <%- JSON.stringify(pois) %>}
     </script>
 
 <script src="../javascripts/homePageMap.js"></script>
