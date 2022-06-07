@@ -5,10 +5,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="..public/css/styles.css">
   
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
@@ -33,9 +34,43 @@
 </nav>
   
 <div class="container">
-  <h3>Statistics Page Page</h3>
-  <p>This is you Statistics!</p>
+  <h3>Active Covid Cases</h3>
+  <div class="chart-container" style="height:600px; width:600px; margin-top: 50px; margin-right: 150px; margin-left: 250px;">
+    <canvas id="chart" class="chart"></canvas>
+  </div>
+
 </div>
+
+
+<script>
+const ctx = document.getElementById('chart');
+const chart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+        labels: ['Covid infected', 'Covid Uninfected'],
+        datasets: [{
+            label: '# of Votes',
+            data: [12, 19],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(75, 192, 192, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(75, 192, 192, 1)'
+            ],
+            borderWidth: 1
+        }]
+    }
+});
+</script>
+
+<script>
+    chart = new Chart(
+    document.getElementById('chart'),
+    config
+  );
+</script>
 
 </body>
 </html>
