@@ -147,4 +147,30 @@ router.post('/editCovidStatus', requiredLogin,  async(req, res)=>{
     res.redirect('/profile');
 })
 
+router.get('/visitsEstimation', async(req, res)=>{
+    let current_weekday = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][new Date().getDay()]
+    const date = new Date();
+    const current_time = date.getHours();
+    
+    const visits_estimastion = await Poi.aggregate([
+        //Ιn the name we use hardcoded the name of the POI for now.
+        {$match: {name : "Flocafe"}},
+        {$unwind: "$populartimes"},
+        {$match: {"populartimes.name": current_weekday}},
+        {$project : {
+            _id:0, "populartimes.data":1,
+            first : {$arrayElemAt : ["$populartimes.data", current_time]},
+            second: {$arrayElemAt : ["$populartimes.data", current_time+1]},
+        }}
+
+        
+    ])
+    const average_visits = (visits_estimastion[0].first + visits_estimastion[0].second)/2
+    res.send({average: average_visits});
+})
+
+router.get('/statistics', (req,res)=>{
+    res.render("statistics.ejs")
+})
+
 module.exports = router;

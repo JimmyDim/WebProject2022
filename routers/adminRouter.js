@@ -128,5 +128,18 @@ router.post('/visit', async (req, res) => {
     visit.save();
 })
 
+//Statistics queries
+
+router.get('/statistics/active_cases', async (req, res)=>{
+    const total_users = await User.count()
+    const active_covid_cases = await User.aggregate([
+        {$match: {positive : "positive"}},
+        {$count : 'total_active_covid_cases'}
+    ])
+
+    percentage = (active_covid_cases[0].total_active_covid_cases/total_users)*100
+    res.send({active_cases_percentage:percentage})
+})
+
 
 module.exports = router;

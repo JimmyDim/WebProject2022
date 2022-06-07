@@ -44,3 +44,11 @@ height:200px;
     margin-right: 150px;
     margin-left: 150px;
 }
+
+.chart-container {
+    height:200px; 
+    width:200px;
+    margin-top: 20px;
+    margin-right: 150px;
+    margin-left: 150px;
+}
