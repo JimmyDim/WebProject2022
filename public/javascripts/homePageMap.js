@@ -50,12 +50,14 @@ map.on('load', () => {
         const name_of_poi = e.features[0].properties.name;
         console.log(name_of_poi)
 
+        console.log(e);
+
 
         //const name_of_poi = await fetch('http://localhost:3000/name/' + coordinates[0].toFixed(7) + '/' + coordinates[0].toFixed[7])
         //    .then(response => response.json())
 
         const visits = await fetch('http://localhost:3000/visitsEstimation/' + name_of_poi)
-            .then(response => response.json())
+                       .then(response => response.json())
 
         console.log('thevisits', visits);
 
@@ -69,7 +71,7 @@ map.on('load', () => {
 
         new mapboxgl.Popup()
             .setLngLat(coordinates)
-            .setHTML(e.features[0].properties.name + "<form action='/visit/" + name_of_poi + "' method='post'> <button class='btn btn-primary'>register visit</button></form>")
+            .setHTML(name_of_poi +"The visits Est : " + visits.average + "<form action='/visit/" + name_of_poi + "' method='post'> <button class='btn btn-primary'>register visit</button></form>")
             .addTo(map);
     });
 

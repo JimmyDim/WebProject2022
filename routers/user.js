@@ -171,6 +171,7 @@ router.post('/editCovidStatus', requiredLogin, async (req, res) => {
     const { covid_infected, date } = req.body;
     const update = { positive: covid_infected, positive_datetime: new Date(date) }
     await User.findOneAndUpdate(filter, update);
+
     res.redirect('/profile');
 })
 
@@ -181,9 +182,9 @@ router.get('/visitsEstimation/:name_of_poi', async (req, res) => {
 
     const name_of_poi = req.params.name_of_poi
 
-    const visits_estimastion = await Poi.aggregate([
+    const visits_estimation = await Poi.aggregate([
         //Ιn the name we use hardcoded the name of the POI for now.
-        { $match: { name: name_of_poi } },
+        { $match: { "properties.name": name_of_poi } },
         { $unwind: "$properties.populartimes" },
         { $match: { "properties.populartimes.name": current_weekday } },
         {
@@ -196,8 +197,8 @@ router.get('/visitsEstimation/:name_of_poi', async (req, res) => {
 
 
     ])
-    console.log(visits_estimastion);
-    const average_visits = (visits_estimastion[0].first + visits_estimastion[0].second) / 2
+
+    const average_visits = (visits_estimation[0].first + visits_estimation[0].second) / 2
     res.send({ average: average_visits });
 })
 
@@ -237,25 +238,7 @@ router.post('/visit/:name', async (req, res) => {
 
     visit.userId = user_id;
     visit.poiId = poiId;
-
-
-
-    // visit.userId = 
-    // visit.poiId = poiId;
-
-
-
-
-
-
-
-
-
-    // const user = await User.findById(visit.userId);
-    // if (user.positive) visit.positive = true;
-    // else visit.positive = false;
-
-    // visit.save();
+    visit.save();
 })
 
 module.exports = router;
