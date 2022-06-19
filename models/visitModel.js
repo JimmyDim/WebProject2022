@@ -12,7 +12,7 @@ const visitSchema = new mongoose.Schema({
     },
     crowd_estimate: {
         type: Number,
-        //required: true,
+        default : 97,
     },
     positive: {
         type: String,
