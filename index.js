@@ -20,6 +20,8 @@ app.use(methodOverride('_method'));
 app.use(express.json({ limit: '50mb' }))
 app.use(userRouter);
 app.use(adminRouter);
+var haversine = require("haversine-distance");
+
 
 
 var bodyParser = require('body-parser');

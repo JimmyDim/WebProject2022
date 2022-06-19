@@ -40,7 +40,7 @@ map.on('load', () => {
     );
     // When a click event occurs on a feature in the places layer, open a popup at the
     // location of the feature, with description HTML from its properties.
-    map.on('click', 'points', async(e) => {
+    map.on('click', 'points', async (e) => {
         // Copy coordinates array.
         const coordinates = e.features[0].geometry.coordinates.slice();
         console.log(coordinates);
@@ -51,13 +51,13 @@ map.on('load', () => {
         console.log(name_of_poi)
 
 
-        // const name_of_poi = await fetch('http://localhost:3000/name/' + coordinates[0].toFixed(7) + '/' + coordinates[0].toFixed[7])
-        // .then(response => response.json())
+        //const name_of_poi = await fetch('http://localhost:3000/name/' + coordinates[0].toFixed(7) + '/' + coordinates[0].toFixed[7])
+        //    .then(response => response.json())
 
-        const visits = await fetch('http://localhost:3000/visitsEstimation/' + name_of_poi.name)
-        .then(response => response.json())
+        const visits = await fetch('http://localhost:3000/visitsEstimation/' + name_of_poi)
+            .then(response => response.json())
 
-        console.log(visits);
+        console.log('thevisits', visits);
 
         // Ensure that if the map is zoomed out such that multiple
         // copies of the feature are visible, the popup appears
@@ -69,7 +69,7 @@ map.on('load', () => {
 
         new mapboxgl.Popup()
             .setLngLat(coordinates)
-            .setHTML(e.features[0].properties.name)
+            .setHTML(e.features[0].properties.name + "<form action='/visit/" + name_of_poi + "' method='post'> <button class='btn btn-primary'>register visit</button></form>")
             .addTo(map);
     });
 
