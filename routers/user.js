@@ -23,10 +23,6 @@ router.get('/homepage', async (req, res) => {
     const database_pois = await Poi.find({});
     const pois = [];
 
-
-
-
-
     for (i = 0; i < database_pois.length; i++) {
         const lat1 = database_pois[i].geometry.coordinates[1];
         const lng1 = database_pois[i].geometry.coordinates[0];
@@ -42,9 +38,6 @@ router.get('/homepage', async (req, res) => {
 
         }
     }
-
-
-
     res.render('homepage.ejs', { pois })
 });
 
@@ -171,7 +164,24 @@ router.post('/editCovidStatus', requiredLogin, async (req, res) => {
     const { covid_infected, date } = req.body;
     const update = { positive: covid_infected, positive_datetime: new Date(date) }
     await User.findOneAndUpdate(filter, update);
+    
+    var CovidDate = new Date(date);
+    var PastDate = new Date(CovidDate);
+    PastDate.setDate(PastDate.getDate() - 7);
 
+    const user_visits = await Visit.aggregate([
+        {$match :{userId : user_id}},
+        {$match : {createdAt : {$gte : new Date(PastDate)}}}
+    ])
+
+    for (let visits of user_visits){
+        console.log(visits._id)
+        const filter = { _id: visits._id };
+        const update = { positive: "positive" }
+        await Visit.findOneAndUpdate(filter, update);
+    }
+
+    console.log(user_visits)
     res.redirect('/profile');
 })
 
@@ -202,26 +212,6 @@ router.get('/visitsEstimation/:name_of_poi', async (req, res) => {
     res.send({ average: average_visits });
 })
 
-router.get('/name/:lang/:long', async (req, res) => {
-    const coordinates = [21.72593593597412, 38.23767450364011]
-    const lang = req.params.lang;
-    const long = req.params.long;
-    const name = await Poi.aggregate([
-        { $match: { "geometry.coordinates": [lang, long] } },
-        {
-            $project: {
-                _id: 0, "name": 1
-            }
-        }
-
-    ])
-
-    res.send({ name: name[0] })
-
-
-})
-
-
 router.get('/statistics', (req, res) => {
     res.render("statistics.ejs")
 })
@@ -229,9 +219,7 @@ router.get('/statistics', (req, res) => {
 //create visit
 router.post('/visit/:name', async (req, res) => {
     const visit = new Visit();
-
     const name = req.params.name;
-    console.log(name);
     const poi = await Poi.find({ "properties.name": name });
     const poiId = poi[0].id;
     const user_id = req.session.user_id;
@@ -239,6 +227,44 @@ router.post('/visit/:name', async (req, res) => {
     visit.userId = user_id;
     visit.poiId = poiId;
     visit.save();
+})
+
+//Check if user is in contact with covid case
+router.get('/checkContact', async(req, res)=>{
+    user_id = req.session.user_id;
+    var PastDate = new Date();
+    PastDate.setDate(PastDate.getDate() - 7);
+
+    const user_visits = await Visit.aggregate([
+        {$match :{userId : user_id}},
+        {$match : {createdAt : {$gte : new Date(PastDate)}}}
+    ])
+
+    const all_covid_visits = [];
+
+    for (let visits of user_visits){
+       const date2hoursBefore = new Date();
+       date2hoursBefore.setDate(visits.createdAt.getHours() - 2);
+       const date2hoursAfter = new Date();
+       date2hoursBefore.setDate(visits.createdAt.getHours() + 2);
+
+       var covid_visits = await Visit.aggregate([
+            {$match : {createdAt : {$gte : new Date(date2hoursBefore), $lt : new Date(date2hoursAfter)}}},
+            {$match : {positive : "positive"}}
+       ])
+       for(let visits of covid_visits){
+            all_covid_visits.push(visits)
+       }
+    }
+
+    const pois_names = [];
+    for(let visits of all_covid_visits){
+        const poi = Poi.findById(visits.poiId)
+        pois_names.push(poi)
+    }
+
+    console.log(pois_names);
+
 })
 
 module.exports = router;
