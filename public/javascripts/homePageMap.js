@@ -43,10 +43,7 @@ map.on('load', () => {
                     'text-anchor': 'top'
                 }
             });
-
-
         }
-
     );
     // When a click event occurs on a feature in the places layer, open a popup at the
     // location of the feature, with description HTML from its properties.
@@ -54,10 +51,8 @@ map.on('load', () => {
         // Copy coordinates array.
         const coordinates = e.features[0].geometry.coordinates.slice();
         console.log(coordinates);
-        const description = "This is a description. " + "<button onclick=' + { this.handlePop } + '> Register visit</button>";
+        const description = e.features[0].properties.description;
         console.log(description);
-
-
 
         // Ensure that if the map is zoomed out such that multiple
         // copies of the feature are visible, the popup appears
@@ -69,9 +64,6 @@ map.on('load', () => {
         new mapboxgl.Popup()
             .setLngLat(coordinates)
             .setHTML(description)
-
-
-
             .addTo(map);
     });
 

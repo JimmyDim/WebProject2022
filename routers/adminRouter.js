@@ -1,5 +1,6 @@
 const express = require('express')
 const router = new express.Router()
+//router.use(express.json());
 const Poi = require('../models/poiModel')
 const Visit = require('../models/visitModel')
 const User = require('../models/user');
@@ -8,7 +9,6 @@ var fs = require('fs');
 const methodOverride = require('method-override');
 const req = require('express/lib/request');
 const poiTable = require('../public/starting_pois_original.json');
-
 //const fetch = require("node-fetch")
 
 
@@ -34,14 +34,23 @@ router.post('/newpoi', async (req, res) => {
 
 router.post('/poiTable', async (req, res,) => {
 
-    for (let i = 0; i < 150; i++) {
-        const poi = new Poi(poiTable[i]);
-
-        poi.geometry.type = 'Point';
-        poi.geometry.coordinates = [poi.coordinates.lng, poi.coordinates.lat];
+    for (let i = 0; i < poiTable.length; i++) {
+        
+        // const poiTables = JSON.parse(poiTable)
+        const poi = new Poi();
+        console.log(poiTable[i].coordinates)
+        poi.name = poiTable[i].name
+        poi.address = poiTable[i].address
+        poi.types = poiTable[i].types
+        poi.rating = poiTable[i].rating
+        poi.rating_n = poiTable[i].rating_n
         poi.type = 'Feature';
-        poi.properties.title = 'MapboxSF';
-        //console.log(poi);
+        poi.geometry.type = 'Point';
+        poi.geometry.coordinates = [poiTable[i].coordinates.lng,poiTable[i].coordinates.lat];
+        poi.time_spent = poiTable[i].time_spent
+        poi.populartimes = poiTable[i].populartimes
+
+        console.log(i);
         await poi.save();
 
     }
@@ -92,8 +101,6 @@ router.get('/pois/:id/edit', async (req, res) => {
     res.render('pois/edit', { poi });
 })
 
-
-
 router.put('/pois/:id', async (req, res) => {
     const { id } = req.params;
     const poi = await Poi.findByIdAndUpdate(id, { ...req.body });
@@ -119,6 +126,19 @@ router.post('/visit', async (req, res) => {
     else visit.positive = false;
 
     visit.save();
+})
+
+//Statistics queries
+
+router.get('/statistics/active_cases', async (req, res)=>{
+    const total_users = await User.count()
+    const active_covid_cases = await User.aggregate([
+        {$match: {positive : "positive"}},
+        {$count : 'total_active_covid_cases'}
+    ])
+
+    percentage = (active_covid_cases[0].total_active_covid_cases/total_users)*100
+    res.send({active_cases_percentage:percentage})
 })
 
 
