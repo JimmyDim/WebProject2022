@@ -47,12 +47,21 @@ map.on('load', () => {
     );
     // When a click event occurs on a feature in the places layer, open a popup at the
     // location of the feature, with description HTML from its properties.
-    map.on('click', 'points', (e) => {
+    map.on('click', 'points', async(e) => {
         // Copy coordinates array.
         const coordinates = e.features[0].geometry.coordinates.slice();
         console.log(coordinates);
         const description = e.features[0].properties.description;
         console.log(description);
+
+
+        const name_of_poi = await fetch('http://localhost:3000/name/' + coordinates[0].toFixed(7) + '/' + coordinates[0].toFixed[7])
+        .then(response => response.json())
+
+        console.log(name_of_poi)
+
+        const visits = await fetch('http://localhost:3000/visitsEstimation/' + name_of_poi.name)
+        .then(response => response.json())
 
         // Ensure that if the map is zoomed out such that multiple
         // copies of the feature are visible, the popup appears
