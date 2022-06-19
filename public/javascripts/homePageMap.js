@@ -3,15 +3,8 @@ const map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/streets-v11',
     center: [21.7259359, 38.2376827],
-    zoom: 10
+    zoom: 12
 });
-
-console.log(pois);
-console.log(pois.features[0].geometry.coordinates);
-console.log(pois.features[0].geometry.coordinates[0]);
-
-let len = pois.features.length;
-console.log(len);
 
 map.on('load', () => {
     // Add an image to use as a custom marker
@@ -54,14 +47,17 @@ map.on('load', () => {
         const description = e.features[0].properties.description;
         console.log(description);
 
-
-        const name_of_poi = await fetch('http://localhost:3000/name/' + coordinates[0].toFixed(7) + '/' + coordinates[0].toFixed[7])
-        .then(response => response.json())
-
+        const name_of_poi = e.features[0].properties.name;
         console.log(name_of_poi)
+
+
+        // const name_of_poi = await fetch('http://localhost:3000/name/' + coordinates[0].toFixed(7) + '/' + coordinates[0].toFixed[7])
+        // .then(response => response.json())
 
         const visits = await fetch('http://localhost:3000/visitsEstimation/' + name_of_poi.name)
         .then(response => response.json())
+
+        console.log(visits);
 
         // Ensure that if the map is zoomed out such that multiple
         // copies of the feature are visible, the popup appears
@@ -70,9 +66,10 @@ map.on('load', () => {
             coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
         }
 
+
         new mapboxgl.Popup()
             .setLngLat(coordinates)
-            .setHTML(description)
+            .setHTML(e.features[0].properties.name)
             .addTo(map);
     });
 

@@ -39,16 +39,16 @@ router.post('/poiTable', async (req, res,) => {
         // const poiTables = JSON.parse(poiTable)
         const poi = new Poi();
         console.log(poiTable[i].coordinates)
-        poi.name = poiTable[i].name
-        poi.address = poiTable[i].address
-        poi.types = poiTable[i].types
-        poi.rating = poiTable[i].rating
-        poi.rating_n = poiTable[i].rating_n
+        poi.properties.name = poiTable[i].name
+        poi.properties.address = poiTable[i].address
+        poi.properties.types = poiTable[i].types
+        poi.properties.rating = poiTable[i].rating
+        poi.properties.rating_n = poiTable[i].rating_n
         poi.type = 'Feature';
         poi.geometry.type = 'Point';
         poi.geometry.coordinates = [poiTable[i].coordinates.lng,poiTable[i].coordinates.lat];
-        poi.time_spent = poiTable[i].time_spent
-        poi.populartimes = poiTable[i].populartimes
+        poi.properties.time_spent = poiTable[i].time_spent
+        poi.properties.populartimes = poiTable[i].populartimes
 
         console.log(i);
         await poi.save();
