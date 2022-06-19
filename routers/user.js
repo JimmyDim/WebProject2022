@@ -147,14 +147,16 @@ router.post('/editCovidStatus', requiredLogin,  async(req, res)=>{
     res.redirect('/profile');
 })
 
-router.get('/visitsEstimation', async(req, res)=>{
+router.get('/visitsEstimation/:name_of_poi', async(req, res)=>{
     let current_weekday = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][new Date().getDay()]
     const date = new Date();
     const current_time = date.getHours();
     
+    const name_of_poi = req.params.name_of_poi
+    
     const visits_estimastion = await Poi.aggregate([
         //Ιn the name we use hardcoded the name of the POI for now.
-        {$match: {name : "Flocafe"}},
+        {$match: {name : name_of_poi}},
         {$unwind: "$populartimes"},
         {$match: {"populartimes.name": current_weekday}},
         {$project : {
@@ -168,6 +170,24 @@ router.get('/visitsEstimation', async(req, res)=>{
     const average_visits = (visits_estimastion[0].first + visits_estimastion[0].second)/2
     res.send({average: average_visits});
 })
+
+router.get('/name/:lang/:long', async (req, res)=>{
+    const coordinates = [21.72593593597412, 38.23767450364011]
+    const lang = req.params.lang;
+    const long = req.params.long;
+    const name = await Poi.aggregate([
+    {$match : {"geometry.coordinates": [lang, long]}},
+    {$project : {
+        _id:0, "name":1
+    }}
+
+])
+
+res.send({name : name[0]})
+
+
+})
+
 
 router.get('/statistics', (req,res)=>{
     res.render("statistics.ejs")
