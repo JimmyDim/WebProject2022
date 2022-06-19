@@ -15,8 +15,8 @@ const visitSchema = new mongoose.Schema({
         //required: true,
     },
     positive: {
-        type: Boolean,
-        //required: true,
+        type: String,
+        default: 'negative',
     }
 }, {
     timestamps: true
