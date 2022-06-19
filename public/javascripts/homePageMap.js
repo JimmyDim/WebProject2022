@@ -3,8 +3,9 @@ const map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/streets-v11',
     center: [21.7259359, 38.2376827],
-    zoom: 12
+    zoom: 17
 });
+
 
 map.on('load', () => {
     // Add an image to use as a custom marker
@@ -47,8 +48,11 @@ map.on('load', () => {
         const description = e.features[0].properties.description;
         console.log(description);
 
-        const name_of_poi = e.features[0].properties.name;
+        const name_of_poi = encodeURIComponent(e.features[0].properties.name);
         console.log(name_of_poi)
+
+        const Decoded_name = e.features[0].properties.name;
+
 
         console.log(e);
 
@@ -57,7 +61,7 @@ map.on('load', () => {
         //    .then(response => response.json())
 
         const visits = await fetch('http://localhost:3000/visitsEstimation/' + name_of_poi)
-                       .then(response => response.json())
+            .then(response => response.json())
 
         console.log('thevisits', visits);
 
@@ -71,9 +75,43 @@ map.on('load', () => {
 
         new mapboxgl.Popup()
             .setLngLat(coordinates)
-            .setHTML(name_of_poi +"The visits Est : " + visits.average + "<form action='/visit/" + name_of_poi + "' method='post'> <button class='btn btn-primary'>register visit</button></form>")
+            .setHTML(Decoded_name + " <br> Visits Est : " + visits.average + "<form action='/visit/" + name_of_poi + "' method='post'> <button class='btn btn-primary'>register visit</button></form>")
             .addTo(map);
     });
+
+    function forwardGeocoder(query) {
+        const matchingFeatures = [];
+        for (const poi of pois.features) {
+            // Handle queries with different capitalization
+            // than the source data by calling toLowerCase().
+            if (
+                poi.properties.name
+                    .toLowerCase()
+                    .includes(query.toLowerCase())
+            ) {
+                // Add a tree emoji as a prefix for custom
+                // data results using carmen geojson format:
+                // https://github.com/mapbox/carmen/blob/master/carmen-geojson.md
+                poi['place_name'] = `📌 ${poi.properties.name}`;
+                poi['center'] = poi.geometry.coordinates;
+                matchingFeatures.push(poi);
+            }
+        }
+        return matchingFeatures;
+    }
+
+   
+    // Add the control to the map.
+    const geocoder = map.addControl(
+        new MapboxGeocoder({
+            accessToken: mapboxgl.accessToken,
+            localGeocoder: forwardGeocoder,
+            zoom: 14,
+            placeholder: 'Enter search e.g. Lincoln Park',
+            mapboxgl: mapboxgl
+        })
+    );
+    // document.getElementById('geocoder').appendChild(geocoder.onAdd(map));
 
     // Change the cursor to a pointer when the mouse is over the places layer.
     map.on('mouseenter', 'points', () => {
