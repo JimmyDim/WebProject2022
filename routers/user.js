@@ -190,7 +190,7 @@ router.get('/visitsEstimation/:name_of_poi', async (req, res) => {
     const date = new Date();
     const current_time = date.getHours();
 
-    const name_of_poi = req.params.name_of_poi
+    const name_of_poi = decodeURIComponent(req.params.name_of_poi);
 
     const visits_estimation = await Poi.aggregate([
         //Ιn the name we use hardcoded the name of the POI for now.
@@ -207,9 +207,16 @@ router.get('/visitsEstimation/:name_of_poi', async (req, res) => {
 
 
     ])
-
+    // console.log('visit 1 : ' + visits_estimation[0].first);
+    // console.log('visit 2 : ' + visits_estimation[0].second);
+    
+    if (visits_estimation[0].first!=0 && visits_estimation[0].second!=0){
     const average_visits = (visits_estimation[0].first + visits_estimation[0].second) / 2
     res.send({ average: average_visits });
+    }
+    else 
+    res.send({ average: "Closed" });
+
 })
 
 router.get('/statistics', (req, res) => {
@@ -220,6 +227,9 @@ router.get('/statistics', (req, res) => {
 router.post('/visit/:name', async (req, res) => {
     const visit = new Visit();
     const name = req.params.name;
+    console.log(name);
+
+
     const poi = await Poi.find({ "properties.name": name });
     const poiId = poi[0].id;
     const user_id = req.session.user_id;
@@ -227,6 +237,7 @@ router.post('/visit/:name', async (req, res) => {
     visit.userId = user_id;
     visit.poiId = poiId;
     visit.save();
+    
 })
 
 //Check if user is in contact with covid case
