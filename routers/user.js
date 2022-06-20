@@ -32,7 +32,7 @@ router.get('/homepage', async (req, res) => {
         var point2 = { lat: 38.2376827, lng: 21.7259359 }
         var haversine_m = haversine(point1, point2);
 
-        if (haversine_m < 50) {
+        if (haversine_m < 500) {
 
             pois.push(database_pois[i]);
 
@@ -225,19 +225,19 @@ router.get('/statistics', (req, res) => {
 
 //create visit
 router.post('/visit/:name', async (req, res) => {
+    const crowd_estimate = req.body;
     const visit = new Visit();
     const name = req.params.name;
-    console.log(name);
-
-
     const poi = await Poi.find({ "properties.name": name });
     const poiId = poi[0].id;
     const user_id = req.session.user_id;
 
     visit.userId = user_id;
     visit.poiId = poiId;
+    visit.crowd_estimate = crowd_estimate.crowd_est;
     visit.save();
     
+    res.redirect('/homepage')
 })
 
 //Check if user is in contact with covid case
@@ -246,35 +246,38 @@ router.get('/checkContact', async(req, res)=>{
     var PastDate = new Date();
     PastDate.setDate(PastDate.getDate() - 7);
 
-    const user_visits = await Visit.aggregate([
-        {$match :{userId : user_id}},
-        {$match : {createdAt : {$gte : new Date(PastDate)}}}
-    ])
+    // const user_visits = await Visit.aggregate([
+    //     {$match : {$and : [{userId : user_id , positive : "posisitve"}]}},
+    //     // {$match :{userId : user_id}},
+    //     // {$match : {createdAt : {$gte : new Date(PastDate) }}}
+    // ])
 
-    const all_covid_visits = [];
+    // console.log(user_visits);
 
-    for (let visits of user_visits){
-       const date2hoursBefore = new Date();
-       date2hoursBefore.setDate(visits.createdAt.getHours() - 2);
-       const date2hoursAfter = new Date();
-       date2hoursBefore.setDate(visits.createdAt.getHours() + 2);
+    // const all_covid_visits = [];
 
-       var covid_visits = await Visit.aggregate([
-            {$match : {createdAt : {$gte : new Date(date2hoursBefore), $lt : new Date(date2hoursAfter)}}},
-            {$match : {positive : "positive"}}
-       ])
-       for(let visits of covid_visits){
-            all_covid_visits.push(visits)
-       }
-    }
+    // for (let visits of user_visits){
+    //    const date2hoursBefore = new Date();
+    //    date2hoursBefore.setDate(visits.createdAt.getHours() - 2);
+    //    const date2hoursAfter = new Date();
+    //    date2hoursBefore.setDate(visits.createdAt.getHours() + 2);
 
-    const pois_names = [];
-    for(let visits of all_covid_visits){
-        const poi = Poi.findById(visits.poiId)
-        pois_names.push(poi)
-    }
+    //    var covid_visits = await Visit.aggregate([
+    //         {$match : {createdAt : {$gte : new Date(date2hoursBefore), $lt : new Date(date2hoursAfter)}}},
+    //         {$match : {positive : "positive"}}
+    //    ])
+    //    for(let visits of covid_visits){
+    //         all_covid_visits.push(visits)
+    //    }
+    // }
 
-    console.log(pois_names);
+    // const pois_names = [];
+    // for(let visits of all_covid_visits){
+    //     const poi = Poi.findById(visits.poiId)
+    //     pois_names.push(poi)
+    // }
+
+    // console.log(pois_names);
 
 })
 
