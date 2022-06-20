@@ -163,25 +163,45 @@ router.post('/editCovidStatus', requiredLogin, async (req, res) => {
     const filter = { _id: user_id };
     const { covid_infected, date } = req.body;
     const update = { positive: covid_infected, positive_datetime: new Date(date) }
+    //Update the 'positive' field of user.
     await User.findOneAndUpdate(filter, update);
     
-    var CovidDate = new Date(date);
-    var PastDate = new Date(CovidDate);
-    PastDate.setDate(PastDate.getDate() - 7);
+    var covidDate = new Date(date);
 
+    nextDate = new Date(covidDate)
+    nextDate.setDate(nextDate.getDate()+1);
+    //Find the visits of the user in on the date that user diagnosed positive.
     const user_visits = await Visit.aggregate([
         {$match :{userId : user_id}},
-        {$match : {createdAt : {$gte : new Date(PastDate)}}}
+        {$match : {createdAt : {$gte : new Date(covidDate), $lt : new Date(nextDate)}}}
     ])
+    
+    //For every visit of the user calculate the Date based 2 hours before and 2 hours after.
+    for( let visit of user_visits){
+        const  visit_before_2_hours = new Date(visit.createdAt);
+        visit_before_2_hours.setHours(visit.createdAt.getHours() - 2);
+        const visit_after_2_hours = new Date(visit.createdAt);
+        visit_after_2_hours.setHours(visit.createdAt.getHours() + 2);
 
-    for (let visits of user_visits){
-        console.log(visits._id)
-        const filter = { _id: visits._id };
-        const update = { positive: "positive" }
-        await Visit.findOneAndUpdate(filter, update);
+        console.log("Real", visit.createdAt);
+        console.log("Here", visit_before_2_hours);
+        console.log("End", visit_after_2_hours);
+        //Find the visits that are in the same day, between +- 2 hours.
+        var all_visits = await Visit.aggregate([
+            {$match : {poiId : visit.poiId}},
+            {$match : {createdAt : {$gte : new Date(visit_before_2_hours), $lt : new Date(visit_after_2_hours)}}},
+        ])
+        //For every one of this visit update the field 'positive' to positive.
+        for (let visits of all_visits){
+                console.log(visits._id)
+                const filter = { _id: visits._id };
+                const update = { positive: "positive" }
+                await Visit.findOneAndUpdate(filter, update);
+            }
     }
+    console.log("User visits : \n", user_visits)
 
-    console.log(user_visits)
+    console.log("All the visits : \n", all_visits)
     res.redirect('/profile');
 })
 
@@ -246,38 +266,14 @@ router.get('/checkContact', async(req, res)=>{
     var PastDate = new Date();
     PastDate.setDate(PastDate.getDate() - 7);
 
-    // const user_visits = await Visit.aggregate([
-    //     {$match : {$and : [{userId : user_id , positive : "posisitve"}]}},
-    //     // {$match :{userId : user_id}},
-    //     // {$match : {createdAt : {$gte : new Date(PastDate) }}}
-    // ])
+    const user_visits = await Visit.aggregate([
+        {$match :{userId : user_id}},
+        {$match :{positive : "positive"}},
+        {$match : {createdAt : {$gte : new Date(PastDate) }}}
+    ])
 
-    // console.log(user_visits);
+    console.log(user_visits);
 
-    // const all_covid_visits = [];
-
-    // for (let visits of user_visits){
-    //    const date2hoursBefore = new Date();
-    //    date2hoursBefore.setDate(visits.createdAt.getHours() - 2);
-    //    const date2hoursAfter = new Date();
-    //    date2hoursBefore.setDate(visits.createdAt.getHours() + 2);
-
-    //    var covid_visits = await Visit.aggregate([
-    //         {$match : {createdAt : {$gte : new Date(date2hoursBefore), $lt : new Date(date2hoursAfter)}}},
-    //         {$match : {positive : "positive"}}
-    //    ])
-    //    for(let visits of covid_visits){
-    //         all_covid_visits.push(visits)
-    //    }
-    // }
-
-    // const pois_names = [];
-    // for(let visits of all_covid_visits){
-    //     const poi = Poi.findById(visits.poiId)
-    //     pois_names.push(poi)
-    // }
-
-    // console.log(pois_names);
 
 })
 
