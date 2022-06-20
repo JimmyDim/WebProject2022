@@ -63,8 +63,6 @@ map.on('load', () => {
         const visits = await fetch('http://localhost:3000/visitsEstimation/' + name_of_poi)
             .then(response => response.json())
 
-        console.log('thevisits', visits);
-
         // Ensure that if the map is zoomed out such that multiple
         // copies of the feature are visible, the popup appears
         // over the copy being pointed to.
@@ -75,7 +73,7 @@ map.on('load', () => {
 
         new mapboxgl.Popup()
             .setLngLat(coordinates)
-            .setHTML(Decoded_name + " <br> Visits Est : " + visits.average + "<form action='/visit/" + name_of_poi + "' method='post'> <button class='btn btn-primary'>register visit</button></form>")
+            .setHTML(Decoded_name + " <br> Visits Est : " + visits.average + "<form action='/visit/" + name_of_poi + "'  method='post'> <a class='btn btn-primary' href='/homepage' role='button'>register visit</a></form>")
             .addTo(map);
     });
 
