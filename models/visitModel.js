@@ -10,6 +10,10 @@ const visitSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    poiName:{
+        type : String,
+        required: true
+    },
     crowd_estimate: {
         type: Number,
         default : 97,
