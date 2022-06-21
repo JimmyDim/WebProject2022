@@ -9,6 +9,7 @@ var fs = require('fs');
 const methodOverride = require('method-override');
 const req = require('express/lib/request');
 const poiTable = require('../public/starting_pois_original.json');
+const { type } = require('express/lib/response');
 //const fetch = require("node-fetch")
 
 
@@ -130,6 +131,13 @@ router.post('/visit', async (req, res) => {
 
 //Statistics queries
 
+//query: total number of visits.
+router.get('/statistics/total_visits', async(req, res)=>{
+    const total_visits = await Visit.count();
+
+})
+
+//query: total active covid cases.
 router.get('/statistics/active_cases', async (req, res)=>{
     const total_users = await User.count()
     const active_covid_cases = await User.aggregate([
@@ -137,8 +145,70 @@ router.get('/statistics/active_cases', async (req, res)=>{
         {$count : 'total_active_covid_cases'}
     ])
 
-    percentage = (active_covid_cases[0].total_active_covid_cases/total_users)*100
-    res.send({active_cases_percentage:percentage})
+    res.send({active_cases:active_covid_cases[0].total_active_covid_cases})
+})
+
+//query: total vists of covid infected people.
+router.get('/statistics/covid_visits', async(req, res)=>{
+    const positive_users = await User.find({positive : "positive"})
+
+    for(let user of positive_users){ 
+        //Calculate the dates before 7 day of covid diagnosis and after 14 days of covid diagnosis
+        const date_before_7_days = new Date(user.positive_datetime);
+        date_before_7_days.setDate(date_before_7_days.getDate() - 7);
+        const date_after_14_days = new Date(user.positive_datetime);
+        date_after_14_days.setDate(date_after_14_days.getDate() + 14);
+        //Count the positive visits the specified interval
+        const user_visits = await Visit.aggregate([
+            {$match : {$and : [{userId : user.id}, {positive : "positive"}]}},
+            {$match : {createdAt : {$gte : date_before_7_days , $lt : date_after_14_days}}},
+            { $group: { _id: null, myCount: { $sum: 1 } } },
+            { $project: { _id: 0 } }
+        ])
+        //In case that a user is positive but has no visits.
+        if(user_visits.length > 0){
+            var total = [];
+        total.push(user_visits[0].myCount)
+        }
+        
+    }
+    res.send(total)
+})
+
+//query: pois classification based on type and number of visits
+router.get('/statistics/type_classification', async(req, res)=>{
+    //Find all the pois types that exist in our DB.
+    const all_types = await Poi.aggregate([
+        {$group:{
+            "_id": "",
+            "type" : {
+                $push : "$properties.types"
+            }
+        }},
+        {$project: {"type" : 1, "_id" : 0}}
+    ])
+    unified_array = all_types[0].type.join(",").split(",");
+    const poi_types = [...new Set(unified_array)];
+    
+    const dictionary = {};
+    const visits = await Visit.find();
+
+    for(let visit of visits){
+        var poi_type = await Poi.aggregate([
+            {$match : {"properties.name" : visit.poiName}},
+            {$unwind : "$properties.types"},
+        ])
+        for(let type of poi_type){
+            if(Object.hasOwn(dictionary, type.properties.types)){
+                dictionary[type.properties.types]++
+            }else{
+                dictionary[type.properties.types] = 0;
+                dictionary[type.properties.types]++
+            }
+        }
+
+    }
+        console.log(dictionary)
 })
 
 

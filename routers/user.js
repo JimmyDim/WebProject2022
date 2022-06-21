@@ -253,6 +253,12 @@ router.post('/visit/:name', async (req, res) => {
     const poiId = poi[0].id;
     const user_id = req.session.user_id;
 
+    //If the user is positive and visit a new poi, it needs to update the visit to positive.
+    const user = await User.findById(user_id)
+    if(user.positive == "positive"){
+        visit.positive = "positive"
+    }
+
     visit.userId = user_id;
     visit.poiId = poiId;
     visit.crowd_estimate = crowd_estimate.crowd_est;
