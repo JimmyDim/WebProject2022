@@ -249,12 +249,14 @@ router.post('/visit/:name', async (req, res) => {
     const visit = new Visit();
     const name = req.params.name;
     const poi = await Poi.find({ "properties.name": name });
+    const poiName = poi[0].properties.name;
     const poiId = poi[0].id;
     const user_id = req.session.user_id;
 
     visit.userId = user_id;
     visit.poiId = poiId;
     visit.crowd_estimate = crowd_estimate.crowd_est;
+    visit.poiName = poiName;
     visit.save();
     
     res.redirect('/homepage')
@@ -274,7 +276,7 @@ router.get('/checkContact', async(req, res)=>{
 
     console.log(user_visits);
 
-
+    res.render('checkContact.ejs', {user_visits})
 })
 
 module.exports = router;

@@ -73,7 +73,7 @@ map.on('load', () => {
 
         new mapboxgl.Popup()
             .setLngLat(coordinates)
-            .setHTML("<h5>"+Decoded_name  + "</h5>" + " <br> Visits Est : " + visits.average + "<form action='/visit/" + name_of_poi + "'  method='post'> <label for='crowd_est'>Crowd Est:</label>  <input type='text' id='crowd_est' name='crowd_est'><br> <br><button class='btn btn-primary' href='/homepage' role='button'>register visit</button></form>")
+            .setHTML("<h5><strong>"+Decoded_name  + "</strong></h5>" + " <br> <b>Visits Est : <b>" + visits.average + "<form action='/visit/" + name_of_poi + "'  method='post'> <label for='crowd_est'>Crowd Est:</label>  <input type='text' id='crowd_est' name='crowd_est'><br> <br><button class='btn btn-primary' href='/homepage' role='button'>register visit</button></form>")
             .addTo(map);
     });
 
