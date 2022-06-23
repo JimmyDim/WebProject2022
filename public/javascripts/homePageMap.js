@@ -3,8 +3,15 @@ const map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/streets-v11',
     center: [21.7259359, 38.2376827],
-    zoom: 17
+    zoom: 14
 });
+
+const marker = new mapboxgl.Marker({
+    color: "#3FB1CE",
+    scale: 1
+}).setLngLat([21.7259359, 38.2376827])
+    .addTo(map);
+
 
 
 map.on('load', () => {
@@ -14,13 +21,11 @@ map.on('load', () => {
         (error, image) => {
             if (error) throw error;
             map.addImage('custom-marker', image);
-            // Add a GeoJSON source with 2 points
             map.addSource('points', {
                 'type': 'geojson',
                 'data': pois
             });
 
-            // Add a symbol layer
             map.addLayer({
                 'id': 'points',
                 'type': 'symbol',
@@ -39,6 +44,7 @@ map.on('load', () => {
             });
         }
     );
+
     // When a click event occurs on a feature in the places layer, open a popup at the
     // location of the feature, with description HTML from its properties.
     map.on('click', 'points', async (e) => {
@@ -53,15 +59,25 @@ map.on('load', () => {
 
         const Decoded_name = e.features[0].properties.name;
 
-
         console.log(e);
-
-
-        //const name_of_poi = await fetch('http://localhost:3000/name/' + coordinates[0].toFixed(7) + '/' + coordinates[0].toFixed[7])
-        //    .then(response => response.json())
 
         const visits = await fetch('http://localhost:3000/visitsEstimation/' + name_of_poi)
             .then(response => response.json())
+
+        lat = coordinates[1];
+        lng = coordinates[0];
+
+        const distance = await fetch('http://localhost:3000/distance/' + lat + '/' + lng)
+            .then(response => response.json())
+
+        console.log("Distance is: " + distance.distance__result);
+
+        if (distance.distance__result <= 20) {
+
+            var visit_button = "method='post'> <label for='crowd_est'>Crowd Est:</label>  <input type='text' id='crowd_est' name='crowd_est'><br> <br><button class='btn btn-primary' href='/homepage' role='button'>register visit</button></form>"
+
+        }
+        else visit_button = '';
 
         // Ensure that if the map is zoomed out such that multiple
         // copies of the feature are visible, the popup appears
@@ -70,26 +86,20 @@ map.on('load', () => {
             coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
         }
 
-
         new mapboxgl.Popup()
             .setLngLat(coordinates)
-            .setHTML("<h5><strong>"+Decoded_name  + "</strong></h5>" + " <br> <b>Visits Est : <b>" + visits.average + "<form action='/visit/" + name_of_poi + "'  method='post'> <label for='crowd_est'>Crowd Est:</label>  <input type='text' id='crowd_est' name='crowd_est'><br> <br><button class='btn btn-primary' href='/homepage' role='button'>register visit</button></form>")
+            .setHTML("<h5><strong>" + Decoded_name + "</strong></h5> <br> <b>Visits Est : <b>" + visits.average + "<form action='/visit/'" + name_of_poi + visit_button)
             .addTo(map);
     });
 
     function forwardGeocoder(query) {
         const matchingFeatures = [];
         for (const poi of pois.features) {
-            // Handle queries with different capitalization
-            // than the source data by calling toLowerCase().
             if (
-                poi.properties.name
-                    .toLowerCase()
+                poi.properties.types
                     .includes(query.toLowerCase())
             ) {
-                // Add a tree emoji as a prefix for custom
-                // data results using carmen geojson format:
-                // https://github.com/mapbox/carmen/blob/master/carmen-geojson.md
+                // Add a pin emoji as a prefix for custom
                 poi['place_name'] = `📌 ${poi.properties.name}`;
                 poi['center'] = poi.geometry.coordinates;
                 matchingFeatures.push(poi);
@@ -97,19 +107,28 @@ map.on('load', () => {
         }
         return matchingFeatures;
     }
+    // const marker = new mapboxgl.Marker({
+    //     color: "#3FB1CE",
+    //     scale: 1
+    // }).setLngLat([21.7259359, 38.2376827])
+    //     .addTo(map);
 
-   
+
+
     // Add the control to the map.
     const geocoder = map.addControl(
         new MapboxGeocoder({
             accessToken: mapboxgl.accessToken,
+            localGeocoderOnly: true,
             localGeocoder: forwardGeocoder,
             zoom: 14,
-            placeholder: 'Enter search e.g. Lincoln Park',
+            placeholder: 'Enter Point Of Interest',
             mapboxgl: mapboxgl
         })
     );
-    // document.getElementById('geocoder').appendChild(geocoder.onAdd(map));
+
+
+    map.addControl(new mapboxgl.NavigationControl());
 
     // Change the cursor to a pointer when the mouse is over the places layer.
     map.on('mouseenter', 'points', () => {

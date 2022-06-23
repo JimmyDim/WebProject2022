@@ -32,7 +32,7 @@ router.get('/homepage', async (req, res) => {
         var point2 = { lat: 38.2376827, lng: 21.7259359 }
         var haversine_m = haversine(point1, point2);
 
-        if (haversine_m < 500) {
+        if (haversine_m < 5000) {
 
             pois.push(database_pois[i]);
 
@@ -235,8 +235,19 @@ router.get('/visitsEstimation/:name_of_poi', async (req, res) => {
     res.send({ average: average_visits });
     }
     else 
-    res.send({ average: "Closed" });
+    res.send({ average: "N/A" });
 
+})
+
+router.get('/distance/:lat/:lng', async (req, res) => {
+    
+    lat = (req.params.lat);
+    lng = (req.params.lng);
+    var point1 = { lat: lat, lng: lng};
+    var point2 = { lat: 38.2376827, lng: 21.7259359 }
+
+    var haversine_m = haversine(point1, point2);
+    res.send({ distance__result: haversine_m });
 })
 
 router.get('/statistics', (req, res) => {
