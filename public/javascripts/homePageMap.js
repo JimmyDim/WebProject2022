@@ -200,7 +200,7 @@ const marker = new mapboxgl.Marker({
     // })
 
 
-// https://docs.mapbox.com/mapbox-gl-js/example/filter-markers-by-input/  Similar example
+// https://docs.mapbox.com/mapbox-gl-js/example/filter-markers-by-input/  Similar example for filter
     //     // Add a layer for this symbol type if it hasn't been added already.
     //     if (!map.getLayer(layerID)) {
     //         map.addLayer({
