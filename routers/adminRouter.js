@@ -218,8 +218,50 @@ router.get('/statistics/type_classification', async (req, res) => {
         }
 
     }
+<<<<<<< HEAD
     res.send(dictionary)
+=======
+        console.log(dictionary)
+        res.send(dictionary)
+>>>>>>> 3e891c8c471b32f648745ad669994ba808eb246d
 })
 
+//query : e
+router.get('/statistics/type_classification_cases', async (req, res) => {
+    const positive_users = await User.find({ positive: "positive" })
+
+    const dictionary = {};
+
+    for (let user of positive_users) {
+        //Calculate the dates before 7 day of covid diagnosis and after 14 days of covid diagnosis
+        const date_before_7_days = new Date(user.positive_datetime);
+        date_before_7_days.setDate(date_before_7_days.getDate() - 7);
+        const date_after_14_days = new Date(user.positive_datetime);
+        date_after_14_days.setDate(date_after_14_days.getDate() + 14);
+
+        const user_visits = await Visit.aggregate([
+            { $match: { $and: [{ userId: user.id }, { positive: "positive" }] } },
+            { $match: { createdAt: { $gte: date_before_7_days, $lt: date_after_14_days } } }
+        ])
+
+        for (let visit of user_visits) {
+            var poi_type = await Poi.aggregate([
+                { $match: { "properties.name": visit.poiName } },
+                { $unwind: "$properties.types" },
+            ])
+            for (let type of poi_type) {
+                if (Object.hasOwn(dictionary, type.properties.types)) {
+                    dictionary[type.properties.types]++
+                } else {
+                    dictionary[type.properties.types] = 0;
+                    dictionary[type.properties.types]++
+                }
+            }
+        }
+
+    }
+    res.send(dictionary)
+
+})
 
 module.exports = router;
