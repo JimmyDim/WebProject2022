@@ -22,8 +22,9 @@ router.get('/pois/new', async (req, res,) => {
 
 router.post('/newpoi', async (req, res) => {
     const poi = new Poi(req.body);
-    poi.geometry.coordinates = [poi.coordinates.lat, poi.coordinates.lng];
+
     poi.geometry.type = 'Point';
+    poi.type = 'Feature';
     console.log("creating poi");
 
     poi.save();
@@ -36,7 +37,7 @@ router.post('/newpoi', async (req, res) => {
 router.post('/poiTable', async (req, res,) => {
 
     for (let i = 0; i < poiTable.length; i++) {
-        
+
         // const poiTables = JSON.parse(poiTable)
         const poi = new Poi();
         console.log(poiTable[i].coordinates)
@@ -47,7 +48,7 @@ router.post('/poiTable', async (req, res,) => {
         poi.properties.rating_n = poiTable[i].rating_n
         poi.type = 'Feature';
         poi.geometry.type = 'Point';
-        poi.geometry.coordinates = [poiTable[i].coordinates.lng,poiTable[i].coordinates.lat];
+        poi.geometry.coordinates = [poiTable[i].coordinates.lng, poiTable[i].coordinates.lat];
         poi.properties.time_spent = poiTable[i].time_spent
         poi.properties.populartimes = poiTable[i].populartimes
 
@@ -132,27 +133,34 @@ router.post('/visit', async (req, res) => {
 //Statistics queries
 
 //query: total number of visits.
-router.get('/statistics/total_visits', async(req, res)=>{
+router.get('/statistics/total_visits', async (req, res) => {
     const total_visits = await Visit.count();
+
+    res.send(total_visits);
+
+
 
 })
 
 //query: total active covid cases.
-router.get('/statistics/active_cases', async (req, res)=>{
+router.get('/statistics/active_cases', async (req, res) => {
     const total_users = await User.count()
+    const total_visits = await Visit.count();
     const active_covid_cases = await User.aggregate([
-        {$match: {positive : "positive"}},
-        {$count : 'total_active_covid_cases'}
+        { $match: { positive: "positive" } },
+        { $count: 'total_active_covid_cases' }
     ])
 
-    res.send({active_cases:active_covid_cases[0].total_active_covid_cases})
+
+
+    res.render('/statistics', { active_cases: active_covid_cases[0].total_active_covid_cases, total_users: total_users, total_visits: total_visits })
 })
 
 //query: total vists of covid infected people.
-router.get('/statistics/covid_visits', async(req, res)=>{
-    const positive_users = await User.find({positive : "positive"})
+router.get('/statistics/covid_visits', async (req, res) => {
+    const positive_users = await User.find({ positive: "positive" })
 
-    for(let user of positive_users){ 
+    for (let user of positive_users) {
         //Calculate the dates before 7 day of covid diagnosis and after 14 days of covid diagnosis
         const date_before_7_days = new Date(user.positive_datetime);
         date_before_7_days.setDate(date_before_7_days.getDate() - 7);
@@ -160,65 +168,71 @@ router.get('/statistics/covid_visits', async(req, res)=>{
         date_after_14_days.setDate(date_after_14_days.getDate() + 14);
         //Count the positive visits the specified interval
         const user_visits = await Visit.aggregate([
-            {$match : {$and : [{userId : user.id}, {positive : "positive"}]}},
-            {$match : {createdAt : {$gte : date_before_7_days , $lt : date_after_14_days}}},
-            {$group: { _id: null, myCount: { $sum: 1 } } },
-            {$project: { _id: 0 } }
+            { $match: { $and: [{ userId: user.id }, { positive: "positive" }] } },
+            { $match: { createdAt: { $gte: date_before_7_days, $lt: date_after_14_days } } },
+            { $group: { _id: null, myCount: { $sum: 1 } } },
+            { $project: { _id: 0 } }
         ])
         //In case that a user is positive but has no visits.
-        if(user_visits.length > 0){
+        if (user_visits.length > 0) {
             var total = [];
-        total.push(user_visits[0].myCount)
+            total.push(user_visits[0].myCount)
         }
-        
+
     }
     res.send(total)
 })
 
 //query: pois classification based on type and number of visits
-router.get('/statistics/type_classification', async(req, res)=>{
+router.get('/statistics/type_classification', async (req, res) => {
     //Find all the pois types that exist in our DB.
     const all_types = await Poi.aggregate([
-        {$group:{
-            "_id": "",
-            "type" : {
-                $push : "$properties.types"
+        {
+            $group: {
+                "_id": "",
+                "type": {
+                    $push: "$properties.types"
+                }
             }
-        }},
-        {$project: {"type" : 1, "_id" : 0}}
+        },
+        { $project: { "type": 1, "_id": 0 } }
     ])
     unified_array = all_types[0].type.join(",").split(",");
     const poi_types = [...new Set(unified_array)];
-    
+
     const dictionary = {};
     const visits = await Visit.find();
 
-    for(let visit of visits){
+    for (let visit of visits) {
         var poi_type = await Poi.aggregate([
-            {$match : {"properties.name" : visit.poiName}},
-            {$unwind : "$properties.types"},
+            { $match: { "properties.name": visit.poiName } },
+            { $unwind: "$properties.types" },
         ])
-        for(let type of poi_type){
-            if(Object.hasOwn(dictionary, type.properties.types)){
+        for (let type of poi_type) {
+            if (Object.hasOwn(dictionary, type.properties.types)) {
                 dictionary[type.properties.types]++
-            }else{
+            } else {
                 dictionary[type.properties.types] = 0;
                 dictionary[type.properties.types]++
             }
         }
 
     }
+<<<<<<< HEAD
+    res.send(dictionary)
+=======
         console.log(dictionary)
         res.send(dictionary)
+>>>>>>> 3e891c8c471b32f648745ad669994ba808eb246d
 })
 
 //query : e
-router.get('/statistics/type_classification_cases', async(req, res)=>{
-    const positive_users = await User.find({positive : "positive"})
+router.get('/statistics/type_classification_cases', async (req, res) => {
+    const positive_users = await User.find({ positive: "positive" })
 
     const dictionary = {};
 
-    for(let user of positive_users){
+    for (let user of positive_users) {
         //Calculate the dates before 7 day of covid diagnosis and after 14 days of covid diagnosis
         const date_before_7_days = new Date(user.positive_datetime);
         date_before_7_days.setDate(date_before_7_days.getDate() - 7);
@@ -226,19 +240,19 @@ router.get('/statistics/type_classification_cases', async(req, res)=>{
         date_after_14_days.setDate(date_after_14_days.getDate() + 14);
 
         const user_visits = await Visit.aggregate([
-            {$match : {$and : [{userId : user.id}, {positive : "positive"}]}},
-            {$match : {createdAt : {$gte : date_before_7_days , $lt : date_after_14_days}}}
+            { $match: { $and: [{ userId: user.id }, { positive: "positive" }] } },
+            { $match: { createdAt: { $gte: date_before_7_days, $lt: date_after_14_days } } }
         ])
 
-        for(let visit of user_visits){
+        for (let visit of user_visits) {
             var poi_type = await Poi.aggregate([
-                {$match : {"properties.name" : visit.poiName}},
-                {$unwind : "$properties.types"},
+                { $match: { "properties.name": visit.poiName } },
+                { $unwind: "$properties.types" },
             ])
-            for(let type of poi_type){
-                if(Object.hasOwn(dictionary, type.properties.types)){
+            for (let type of poi_type) {
+                if (Object.hasOwn(dictionary, type.properties.types)) {
                     dictionary[type.properties.types]++
-                }else{
+                } else {
                     dictionary[type.properties.types] = 0;
                     dictionary[type.properties.types]++
                 }
