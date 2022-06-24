@@ -16,6 +16,18 @@ const requiredLogin = (req, res, next) => {
     }
     next();
 }
+const isAdmin = (req, res, next) => {
+    // Check if the requesting user is marked as admin in database
+
+    let isAdmin = '123';
+    isAdmin = req.session._id;
+    console.log(isAdmin)
+    if (isAdmin == "62b4d7b94c3b3746bca26758") {
+        next();
+    } else {
+        res.redirect('/userLogin')
+    }
+}
 router.get('/', (req, res) => {
     res.redirect('/userLogin');
 })
@@ -166,20 +178,20 @@ router.post('/editCovidStatus', requiredLogin, async (req, res) => {
     const update = { positive: covid_infected, positive_datetime: new Date(date) }
     //Update the 'positive' field of user.
     await User.findOneAndUpdate(filter, update);
-    
+
     var covidDate = new Date(date);
 
     nextDate = new Date(covidDate)
-    nextDate.setDate(nextDate.getDate()+1);
+    nextDate.setDate(nextDate.getDate() + 1);
     //Find the visits of the user in on the date that user diagnosed positive.
     const user_visits = await Visit.aggregate([
-        {$match :{userId : user_id}},
-        {$match : {createdAt : {$gte : new Date(covidDate), $lt : new Date(nextDate)}}}
+        { $match: { userId: user_id } },
+        { $match: { createdAt: { $gte: new Date(covidDate), $lt: new Date(nextDate) } } }
     ])
-    
+
     //For every visit of the user calculate the Date based 2 hours before and 2 hours after.
-    for( let visit of user_visits){
-        const  visit_before_2_hours = new Date(visit.createdAt);
+    for (let visit of user_visits) {
+        const visit_before_2_hours = new Date(visit.createdAt);
         visit_before_2_hours.setHours(visit.createdAt.getHours() - 2);
         const visit_after_2_hours = new Date(visit.createdAt);
         visit_after_2_hours.setHours(visit.createdAt.getHours() + 2);
@@ -189,16 +201,16 @@ router.post('/editCovidStatus', requiredLogin, async (req, res) => {
         console.log("End", visit_after_2_hours);
         //Find the visits that are in the same day, between +- 2 hours.
         var all_visits = await Visit.aggregate([
-            {$match : {poiId : visit.poiId}},
-            {$match : {createdAt : {$gte : new Date(visit_before_2_hours), $lt : new Date(visit_after_2_hours)}}},
+            { $match: { poiId: visit.poiId } },
+            { $match: { createdAt: { $gte: new Date(visit_before_2_hours), $lt: new Date(visit_after_2_hours) } } },
         ])
         //For every one of this visit update the field 'positive' to positive.
-        for (let visits of all_visits){
-                console.log(visits._id)
-                const filter = { _id: visits._id };
-                const update = { positive: "positive" }
-                await Visit.findOneAndUpdate(filter, update);
-            }
+        for (let visits of all_visits) {
+            console.log(visits._id)
+            const filter = { _id: visits._id };
+            const update = { positive: "positive" }
+            await Visit.findOneAndUpdate(filter, update);
+        }
     }
     console.log("User visits : \n", user_visits)
 
@@ -229,21 +241,21 @@ router.get('/visitsEstimation/:name_of_poi', async (req, res) => {
     ])
     // console.log('visit 1 : ' + visits_estimation[0].first);
     // console.log('visit 2 : ' + visits_estimation[0].second);
-    
-    if (visits_estimation[0].first!=0 && visits_estimation[0].second!=0){
-    const average_visits = (visits_estimation[0].first + visits_estimation[0].second) / 2
-    res.send({ average: average_visits });
+
+    if (visits_estimation[0].first != 0 && visits_estimation[0].second != 0) {
+        const average_visits = (visits_estimation[0].first + visits_estimation[0].second) / 2
+        res.send({ average: average_visits });
     }
-    else 
-    res.send({ average: "N/A" });
+    else
+        res.send({ average: "N/A" });
 
 })
 
 router.get('/distance/:lat/:lng', async (req, res) => {
-    
+
     lat = (req.params.lat);
     lng = (req.params.lng);
-    var point1 = { lat: lat, lng: lng};
+    var point1 = { lat: lat, lng: lng };
     var point2 = { lat: 38.2376827, lng: 21.7259359 }
 
     var haversine_m = haversine(point1, point2);
@@ -266,7 +278,7 @@ router.post('/visit/:name', async (req, res) => {
 
     //If the user is positive and visit a new poi, it needs to update the visit to positive.
     const user = await User.findById(user_id)
-    if(user.positive == "positive"){
+    if (user.positive == "positive") {
         visit.positive = "positive"
     }
 
@@ -275,25 +287,25 @@ router.post('/visit/:name', async (req, res) => {
     visit.crowd_estimate = crowd_estimate.crowd_est;
     visit.poiName = poiName;
     visit.save();
-    
+
     res.redirect('/homepage')
 })
 
 //Check if user is in contact with covid case
-router.get('/checkContact', async(req, res)=>{
+router.get('/checkContact', async (req, res) => {
     user_id = req.session.user_id;
     var PastDate = new Date();
     PastDate.setDate(PastDate.getDate() - 7);
 
     const user_visits = await Visit.aggregate([
-        {$match :{userId : user_id}},
-        {$match :{positive : "positive"}},
-        {$match : {createdAt : {$gte : new Date(PastDate) }}}
+        { $match: { userId: user_id } },
+        { $match: { positive: "positive" } },
+        { $match: { createdAt: { $gte: new Date(PastDate) } } }
     ])
 
     console.log(user_visits);
 
-    res.render('checkContact.ejs', {user_visits})
+    res.render('checkContact.ejs', { user_visits })
 })
 
 router.get('/visitrate/:name_of_poi', async (req, res) => {
@@ -309,43 +321,42 @@ router.get('/visitrate/:name_of_poi', async (req, res) => {
         { $match: { "properties.populartimes.name": current_weekday } },
         {
             $project: {
-                _id: 0, "properties.populartimes.data": 1                
+                _id: 0, "properties.populartimes.data": 1
             }
         }
     ])
     const visitarray = visits_estimation[0].properties.populartimes.data;
     var max = visitarray[0];
-   for(var i=0;i<=visitarray.length;i++){
-        if (visitarray[i]> max){
+    for (var i = 0; i <= visitarray.length; i++) {
+        if (visitarray[i] > max) {
             max = visitarray[i]
         }
     }
     var rate = 0;
     var icon = 'green';
-    for(var i=0;i<=visitarray.length-1;i++){
-        if (visitarray[i]!=0){
-            rate = (visitarray[i]/max) * 100
-            }
-        if (rate <= 32){
+    for (var i = 0; i <= visitarray.length - 1; i++) {
+        if (visitarray[i] != 0) {
+            rate = (visitarray[i] / max) * 100
+        }
+        if (rate <= 32) {
             icon = 'green';
         }
-        else if (rate <= 65){
+        else if (rate <= 65) {
             icon = 'orange';
         }
-        else if (rate >= 66){
+        else if (rate >= 66) {
             icon = 'red';
         }
-        
-        if (current_time == i){
-            var finalicon = icon;             
+
+        if (current_time == i) {
+            var finalicon = icon;
         }
     }
     res.send({ icon_colour: finalicon });
 
 })
 
-app.use(express.static('public')); 
+app.use(express.static('public'));
 app.use('/icons', express.static('icons'));
- 
 
-module.exports = router;
+module.exports = { router, isAdmin };
