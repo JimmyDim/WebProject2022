@@ -78,8 +78,7 @@ const marker = new mapboxgl.Marker({
     
             if (distance.distance__result <= 20) {
     
-                var visit_button = `<form action='/visit/'${name_of_poi} method='post'> <label for='crowd_est'>Crowd Est:</label>  <input type='text' id='crowd_est' name='crowd_est'><br> <br><button class='btn btn-primary' href='/homepage' role='button'>register visit</button></form>`
-    
+                var visit_button = `<form action='/visit/${name_of_poi}' method='post'> <label for='crowd_est'>Crowd Est:</label>  <input type='text' id='crowd_est' name='crowd_est'><br> <br><button class='btn btn-primary' href='/homepage' role='button'>register visit</button></form>`
             }
             else visit_button = '';
     
