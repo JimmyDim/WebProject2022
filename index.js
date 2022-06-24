@@ -23,7 +23,7 @@ app.use(userRouter);
 app.use(adminRouter);
 app.use('/admin', adminBroRouter);
 var haversine = require("haversine-distance");
-
+//app.use(userRouter.isAdmin());
 
 
 var bodyParser = require('body-parser');

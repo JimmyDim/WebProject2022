@@ -10,6 +10,7 @@ const methodOverride = require('method-override');
 const req = require('express/lib/request');
 const poiTable = require('../public/starting_pois_original.json');
 const { type } = require('express/lib/response');
+const { isAdmin } = require('./user');
 //const fetch = require("node-fetch")
 
 
@@ -136,13 +137,13 @@ router.post('/visit', async (req, res) => {
 router.get('/statistics/total_visits', async (req, res) => {
     const total_visits = await Visit.count();
 
-    res.render('chart1', {total_visits});
+    res.render('chart1', { total_visits });
 
 })
 
 
 router.get('/statistics/active', async (req, res) => {
-   //query: total active covid cases.
+    //query: total active covid cases.
     const total_visits = await Visit.count();
     //query: total active covid cases.
     const total_users = await User.count();
@@ -150,7 +151,7 @@ router.get('/statistics/active', async (req, res) => {
         { $match: { positive: "positive" } },
         { $count: 'total_active_covid_cases' }
     ])
-    res.render('statistics', {users: total_users, active: active_covid_cases[0].total_active_covid_cases, visits: total_visits});
+    res.render('statistics', { users: total_users, active: active_covid_cases[0].total_active_covid_cases, visits: total_visits });
 });
 
 //query: total vists of covid infected people.
@@ -255,5 +256,6 @@ router.get('/statistics/type_classification_cases', async (req, res) => {
     res.send(dictionary)
 
 })
+
 
 module.exports = router;
