@@ -26,7 +26,8 @@
                 <div class="row input-field">
                     <label class="col-lg-2 control-label" for="username">Name</label>
                     <div class="col-lg-5">
-                        <input type="text" name="name" id="name" class="form-control col-lg-6" value="<%=poi.name%>">
+                        <input type="text" name="name" id="name" class="form-control col-lg-6"
+                            value="<%=poi.properties.name%>">
                     </div>
                 </div>
                 <br>
@@ -34,7 +35,7 @@
                     <label class="col-lg-2 control-label" for="address">Address</label>
                     <div class="col-lg-5">
                         <input type="text" name="address" id="address" class="form-control col-lg-6"
-                            value="<%=poi.address%>">
+                            value="<%=poi.properties.address%>">
                     </div>
                 </div>
                 <br>
@@ -42,7 +43,7 @@
                     <label class="col-lg-2 control-label" for="address">Tags</label>
                     <div class="col-lg-5">
                         <input type="array" name="types[]" id="types" class="form-control col-lg-6"
-                            value="<%=poi.types%>">
+                            value="<%=poi.properties.types%>">
                     </div>
                 </div>
                 <br>
@@ -51,7 +52,7 @@
                     <label class="col-lg-2 control-label" for="latitude">Latitude</label>
                     <div class="col-lg-5">
                         <input type="text" name="coordinates[lat]" id="latitude" class="form-control col-lg-6"
-                            value="<%=poi.coordinates.lat%>">
+                            value="<%=poi.geometry.coordinates[1]%>">
                     </div>
                 </div>
                 <br>
@@ -59,7 +60,7 @@
                     <label class="col-lg-2 control-label" for="longtitude">Longtitude</label>
                     <div class="col-lg-5">
                         <input type="text" name="coordinates[lng]" id="longtitude" class="form-control col-lg-6"
-                            value="<%=poi.coordinates.lng%>">
+                            value="<%=poi.geometry.coordinates[0]%>">
                     </div>
                 </div>
                 <br>
@@ -68,7 +69,7 @@
                     <label class="col-lg-2 control-label" for="rating">Rating Score</label>
                     <div class="col-lg-5">
                         <input type="text" name="rating" id="rating" class="form-control col-lg-6"
-                            value="<%=poi.rating%>">
+                            value="<%=poi.properties.rating%>">
                     </div>
                 </div>
                 <br>
@@ -76,7 +77,7 @@
                     <label class="col-lg-2 control-label" for="rating_n">Reviews</label>
                     <div class="col-lg-5">
                         <input type="text" name="rating_n" id="rating_n" class="form-control col-lg-6"
-                            value="<%=poi.rating_n%>">
+                            value="<%=poi.properties.rating_n%>">
                     </div>
                 </div>
                 <br>

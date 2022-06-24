@@ -11,9 +11,10 @@ const adminBro = new AdminBro({
   resources: [User, Poi, Visit],
   rootPath: '/admin',
   branding: {
-    logo:'https://indiebenefits.com/wp-content/uploads/2022/06/health-insurance.png',
+    logo: 'https://indiebenefits.com/wp-content/uploads/2022/06/health-insurance.png',
     companyName: 'Covid-19 Shield'
-  }
+  },
+
 })
 
 const router = AdminBroExpress.buildRouter(adminBro);
