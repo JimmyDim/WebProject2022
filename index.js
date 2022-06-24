@@ -3,6 +3,7 @@ const app = express();
 const path = require('path');
 const userRouter = require('./routers/user');
 const adminRouter = require('./routers/adminRouter');
+const adminBroRouter = require('./routers/admin.router')
 const session = require('express-session');
 const flash = require('connect-flash');
 const methodOverride = require('method-override');
@@ -20,6 +21,7 @@ app.use(methodOverride('_method'));
 app.use(express.json({ limit: '50mb' }))
 app.use(userRouter);
 app.use(adminRouter);
+app.use('/admin', adminBroRouter);
 var haversine = require("haversine-distance");
 
 

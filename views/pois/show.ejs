@@ -15,7 +15,7 @@
 <body>
     <div class="container bootstrap snippets bootdey">
         <h1 class="text-primary">
-            <%=poi.name%>
+            <%=poi.properties.name%>
         </h1>
         <hr>
         <div class="row">
@@ -27,7 +27,7 @@
                     <label class="col-lg-2 control-label" for="address">Address</label>
                     <div class="col-lg-5">
                         <div>
-                            <%=poi.address %>
+                            <%=poi.properties.address %>
                         </div>
                     </div>
                 </div>
@@ -36,7 +36,7 @@
                     <label class="col-lg-2 control-label" for="lat">Coordinates</label>
                     <div class="col-lg-5">
                         <div>
-                            <%=poi.coordinates.lat%>, <%=poi.coordinates.lng%>
+                            <%=poi.geometry.coordinates[1]%>, <%=poi.geometry.coordinates[0]%>
                         </div>
                     </div>
                 </div>
@@ -45,7 +45,7 @@
                     <label class="col-lg-2 control-label" for="types">Tags</label>
                     <div class="col-lg-5">
                         <div>
-                            <%=poi.types%>
+                            <%=poi.properties.types%>
                         </div>
                     </div>
                 </div>
@@ -56,7 +56,7 @@
                     <label class="col-lg-2 control-label" for="">Rating Score</label>
                     <div class="col-lg-5">
                         <div>
-                            <%=poi.rating%>
+                            <%=poi.properties.rating%>
                         </div>
                     </div>
                 </div>
@@ -65,28 +65,30 @@
                     <label class="col-lg-2 control-label" for="">Number of Reviews</label>
                     <div class="col-lg-5">
                         <div>
-                            <%=poi.rating_n%>
+                            <%=poi.properties.rating_n%>
                         </div>
                     </div>
                 </div>
                 <br>
-                <div class="row input-field">
+                <div class="col-12" style="display:inline">
                     <div class="col-lg-6">
-                        <a class="btn btn-primary btn-block mb-4 button" href="/pois/<%=poi._id%>/edit">Edit</a>
-                    </div>
-                </div>
-                <br>
-                <form action="/pois/<%=poi._id%>?_method=DELETE" method="post">
-                    <div class="row input-field">
-                        <div class="col-lg-6">
-                            <button class="btn btn-primary btn-block mb-4 button" role="button">Delete</button>
+                        <div class="row input-field">
+                            <a class="btn btn-primary btn-block mb-4 button" href="/pois/<%=poi._id%>/edit">Edit</a>
                         </div>
                     </div>
-                </form>
-                <br>
-                <div class="row input-field">
+                    <br>
+                    <form action="/pois/<%=poi._id%>?_method=DELETE" method="post">
+                        <div class="col-6">
+                            <div class="col-lg-6">
+                                <button class="btn btn-primary btn-block mb-4 button" role="button">Delete</button>
+                            </div>
+                        </div>
+                    </form>
+                    <br>
                     <div class="col-lg-6">
-                        <a class="btn btn-primary btn-block mb-4 button" href="/pois">Back</a>
+                        <div class="row input-field">
+                            <a class="btn btn-primary btn-block mb-4 button" href="/pois">Back</a>
+                        </div>
                     </div>
                 </div>
             </div>
