@@ -150,9 +150,6 @@ router.get('/statistics/active_cases', async (req, res) => {
         { $match: { positive: "positive" } },
         { $count: 'total_active_covid_cases' }
     ])
-
-
-
     res.render('/statistics', { active_cases: active_covid_cases[0].total_active_covid_cases, total_users: total_users, total_visits: total_visits })
 })
 
