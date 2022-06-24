@@ -218,12 +218,7 @@ router.get('/statistics/type_classification', async (req, res) => {
         }
 
     }
-<<<<<<< HEAD
     res.send(dictionary)
-=======
-        console.log(dictionary)
-        res.send(dictionary)
->>>>>>> 3e891c8c471b32f648745ad669994ba808eb246d
 })
 
 //query : e
