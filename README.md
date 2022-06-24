@@ -18,9 +18,9 @@ This is the project for the CEID Web Development Course.
 
 ### Χρήστης
 
-1. Σύνδεση στο σύστημα (`login.ejs`)
+1. Σύνδεση στο σύστημα (`userlogin.ejs`)
 Περιλαμβάνει και τα: 
-    * Δεν έχω λογαριασμό --> εγγραφή  (`signup.ejs`)
+    * Δεν έχω λογαριασμό --> εγγραφή  (`usersignup.ejs`)
     * Διαχειριστής --> είσοδος εδώ (`adminlogin.ejs`)
     1. Στήσιμο Βάσης Δεδομένων
     2. Backend (Σύνδεση με ΒΔ, εκτέλεση απαραίτητων λειτουργιών)
@@ -29,15 +29,15 @@ This is the project for the CEID Web Development Course.
     5. Beautify (Styles, Themes etc.)
     
 
-2. Εγγραφή στο σύστημα (`signup.ejs`)
+2. Εγγραφή στο σύστημα (`usersignup.ejs`)
     1. Backend 
     2. Frontend 
     3. Test 
     4. Beautify
 
-3. Αρχική απεικόνιση χάρτη (`mainpage.ejs`)
+3. Αρχική απεικόνιση χάρτη (`homepage.ejs`)
     * Έχει επιλογή για αποσύνδεση
-    * "Επεξεργασία προφίλ" (`accountsettings.ejs`)
+    * "Επεξεργασία προφίλ" (`profile.ejs`)
     * Χάρτης
     * Βλέπουμε την τωρινή τοποθεσία του χρήστη 
     * Υπάρχει πεδίο αναζήτησης πάνω στον χάρτη
@@ -45,8 +45,8 @@ This is the project for the CEID Web Development Course.
         - Αναζήτηση POIs 
         - Απεικόνιση ως markers με συγκεκριμένο χρώμα στο χάρτη
         - Pop-up κάθε marker με εκτίμηση επισκεψιμότητας & ΜΟ επισκεπτών + "Καταχώρηση επίσκεψης": για τα POIs εντός 20μ καταχώρηση επίσκεψης χρήστη και εκτίμηση επισκεπτών
-    * "Δήλωση Κρούσματος" (`iamsick.ejs`) Σε άλλη σελίδα ή όχι ;
-    * "Πιθανή επαφή με κρούσμα" (`amisick.ejs`) Σε άλλη σελίδα ή όχι ;
+    * "Δήλωση Κρούσματος" (`editCovidStatus.ejs`) Σε άλλη σελίδα ή όχι ;
+    * "Πιθανή επαφή με κρούσμα" (`checkcontact.ejs`) Σε άλλη σελίδα ή όχι ;
 
     1. Εύρεση και set up κατάλληλου map package 
     2. Back
@@ -54,7 +54,7 @@ This is the project for the CEID Web Development Course.
     4. Test
     5. Beautify
 
-4. "Δήλωση Κρούσματος" (`iamsick.ejs`)
+4. "Δήλωση Κρούσματος" (`editCovidStatus.ejs`)
     * Ναι / άκυρο
     * Ημερομηνία 
     1. Εύρεση/σχεδιασμός κατάλληλου Layout σελίδας
@@ -74,7 +74,7 @@ This is the project for the CEID Web Development Course.
      (Τα δυο τελευταία τα κάνουμε εδώ για να μας βοηθήσουν σε άλλα ερωτήματα)
 
 
-5. "Πιθανή επαφή με κρούσμα" (`amisick.ejs`)
+5. "Πιθανή επαφή με κρούσμα" (`checkcontact.ejs`)
     * Λίστα με τα POIs που επισκέφτηκε
     1. Εύρεση/σχεδιασμός κατάλληλου Layout σελίδας
     2. Backend 
@@ -90,7 +90,7 @@ This is the project for the CEID Web Development Course.
 
     -Στο frontend μπορούμε να του πουμε πλέον πού και πότε ήρθε σε πιθανή επαφή με κρούσμα, καθώς και πόσες φορές την τελευταία εβδομάδα. 
 
-6. "Επεξεργασία προφίλ" (`accountsettings.ejs`)
+6. "Επεξεργασία προφίλ" (`profile.ejs`)
     * Αλλαγή username/password
     * Ιστορικό επισκέψεων
     * Ιστορικό δήλωσης κρουσμάτων
@@ -108,14 +108,14 @@ This is the project for the CEID Web Development Course.
 ### Διαχειριστής
 
 1. Σύνδεση στο σύστημα (`adminlogin.ejs`)
-    * Δεν είμαι διαχειριστής --> (`login.ejs`)
+    * Δεν είμαι διαχειριστής --> (`userlogin.ejs`)
     1. Στήσιμο Βάσης Δεδομένων
     2. Backend
     3. Frontend
     4. Test 
     5. Beautify
 
-2. "Ανέβασμα, ενημέρωση και διαγραφή δεδομένων" (`adminmain.ejs`)
+2. "Ανέβασμα, ενημέρωση και διαγραφή δεδομένων" (`admin.ejs`)
     * CRUD POIs
     1. Εύρεση/σχεδιασμός κατάλληλου Layout σελίδας
     2. Backend 
