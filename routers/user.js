@@ -16,18 +16,18 @@ const requiredLogin = (req, res, next) => {
     }
     next();
 }
-const isAdmin = (req, res, next) => {
-    // Check if the requesting user is marked as admin in database
+// const isAdmin = (req, res, next) => {
+//     // Check if the requesting user is marked as admin in database
 
-    let isAdmin = '123';
-    isAdmin = req.session._id;
-    console.log(isAdmin)
-    if (isAdmin == "62b4d7b94c3b3746bca26758") {
-        next();
-    } else {
-        res.redirect('/userLogin')
-    }
-}
+//     let isAdmin = '123';
+//     isAdmin = req.session._id;
+//     console.log(isAdmin)
+//     if (isAdmin == "62b4d7b94c3b3746bca26758") {
+//         next();
+//     } else {
+//         res.redirect('/userLogin')
+//     }
+// }
 router.get('/', (req, res) => {
     res.redirect('/userLogin');
 })
@@ -359,4 +359,5 @@ router.get('/visitrate/:name_of_poi', async (req, res) => {
 app.use(express.static('public'));
 app.use('/icons', express.static('icons'));
 
-module.exports = { router, isAdmin };
+//module.exports = { router, isAdmin };
+module.exports = router;
