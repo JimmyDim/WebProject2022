@@ -36,32 +36,41 @@
   </nav>
 
   <div class="container">
-    <h3>Active Covid Cases <%=total_visits%>
+    <h3>Active Covid Cases 
     </h3>
     <div class="chart-container"
       style="height:600px; width:600px; margin-top: 50px; margin-right: 150px; margin-left: 250px;">
-      <canvas id="chart" class="chart"></canvas>
+      <canvas id="myChart" width="400" height="400"></canvas>
     </div>
 
   </div>
 
+  <script>
+    var visits = <%= visits %>  
+    console.log(visits);   
+    var users = <%= users %>  
+    console.log(users);    
+    var active = <%= active %>  
+    console.log(active);   
+    var total_inf_visits = <%= total_inf_visits %>  
+    console.log(total_inf_visits);        
+ </script>
 
   <script>
-    const ctx = document.getElementById('chart');
-    const chart = new Chart(ctx, {
-      type: 'doughnut',
+    const ctx = document.getElementById('myChart');
+    const myChart = new Chart(ctx, {
+      type: 'bar',
       data: {
-        labels: ['Covid infected', 'Covid Uninfected'],
+        labels: ['Total Visits'],
         datasets: [{
-          label: '# of Votes',
-          data: [active_users, total_users],
+          label: '# of Visits',
+          data: [visits],
           backgroundColor: [
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(75, 192, 192, 0.2)'
+            'rgba(0, 88, 255, 0.7)'
+            
           ],
           borderColor: [
-            'rgba(255, 99, 132, 1)',
-            'rgba(75, 192, 192, 1)'
+            'rgba(0, 88, 255, 1)'
           ],
           borderWidth: 1
         }]
@@ -69,37 +78,71 @@
     });
   </script>
 
+  
+
   <div class="container">
     <h3>Visits</h3>
     <div class="chart-container"
       style="height:600px; width:600px; margin-top: 50px; margin-right: 150px; margin-left: 250px;">
-      <canvas id="chart" class="chart"></canvas>
+      <canvas id="myChart2" width="400" height="400"></canvas>
     </div>
 
   </div>
 
-  <!-- <script>
-    const ctxx = document.getElementById('chart');
-    const chart2 = new Chart(ctxx, {
+  <script>
+    const ctx2 = document.getElementById('myChart2');
+    const myChart2 = new Chart(ctx2, {
       type: 'doughnut',
       data: {
-        labels: ['Covid infected', 'Covid Uninfected'],
+        labels: ['Covid Uninfected', 'Covid infected'],
         datasets: [{
-          label: '# of Votes',
-          data: [12, 19],
+          label: '# of Positive Users',
+          data: [visits, active],
           backgroundColor: [
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(75, 192, 192, 0.2)'
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(255, 99, 132, 0.2)'
           ],
           borderColor: [
-            'rgba(255, 99, 132, 1)',
-            'rgba(75, 192, 192, 1)'
+            'rgba(75, 192, 192, 1)',
+            'rgba(255, 99, 132, 1)'          
           ],
           borderWidth: 1
         }]
       }
     });
-  </script> -->
+  </script>
+
+<div class="container">
+  <h3>Total Infected Visits</h3>
+  <div class="chart-container"
+    style="height:600px; width:600px; margin-top: 50px; margin-right: 150px; margin-left: 250px;">
+    <canvas id="myChart3" width="400" height="400"></canvas>
+  </div>
+
+</div>
+
+<script>
+  const ctx3 = document.getElementById('myChart4');
+  const myChart3 = new Chart(ctx3, {
+    type: 'pie',
+    data: {
+      labels: ['Non Infected Visits', 'Infected Visits'],
+      datasets: [{
+        label: '# of Positive Visits',
+        data: [users-active-total_inf_visits, total_inf_visits],
+        backgroundColor: [
+          'rgba(220, 255, 0, 0.4)',
+          'rgba(255, 151, 0, 0.4)'
+        ],
+        borderColor: [
+          'rgba(220, 255, 0, 1)',
+          'rgba(255, 151, 0, 1)'          
+        ],
+        borderWidth: 1
+      }]
+    }
+  });
+</script>
 
 </body>
 

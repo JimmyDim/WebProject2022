@@ -136,22 +136,50 @@ router.post('/visit', async (req, res) => {
 router.get('/statistics/total_visits', async (req, res) => {
     const total_visits = await Visit.count();
 
-    res.send(total_visits);
-
-
+    res.render('chart1', {total_visits});
 
 })
 
-//query: total active covid cases.
-router.get('/statistics/active_cases', async (req, res) => {
-    const total_users = await User.count()
+
+router.get('/statistics/active', async (req, res) => {
+   //query: total active covid cases.
     const total_visits = await Visit.count();
+    //query: total active covid cases.
+    const total_users = await User.count();
     const active_covid_cases = await User.aggregate([
         { $match: { positive: "positive" } },
         { $count: 'total_active_covid_cases' }
     ])
-    res.render('/statistics', { active_cases: active_covid_cases[0].total_active_covid_cases, total_users: total_users, total_visits: total_visits })
-})
+
+    //query: total vists of covid infected people.
+    const positive_users = await User.find({ positive: "positive" })
+
+    for (let user of positive_users) {
+        //Calculate the dates before 7 day of covid diagnosis and after 14 days of covid diagnosis
+        const date_before_7_days = new Date(user.positive_datetime);
+        date_before_7_days.setDate(date_before_7_days.getDate() - 7);
+        const date_after_14_days = new Date(user.positive_datetime);
+        date_after_14_days.setDate(date_after_14_days.getDate() + 14);
+
+        //Count the positive visits the specified interval
+        const user_visits = await Visit.aggregate([
+            { $match: { $and: [{ userId: user.id }, { positive: "positive" }] } },
+            { $match: { createdAt: { $gte: date_before_7_days, $lt: date_after_14_days } } },
+            { $group: { _id: null, myCount: { $sum: 1 } } },
+            { $project: { _id: 0 } }
+        ])
+        
+        //In case that a user is positive but has no visits.
+        if (user_visits.length > 0) {
+            var total = [];
+            total.push(user_visits[0].myCount)
+        }
+
+    }
+
+    console.log(user_visits);
+    res.render('statistics', {users: total_users, active: active_covid_cases[0].total_active_covid_cases, visits: total_visits, total_inf_visits: user_visits});
+});
 
 //query: total vists of covid infected people.
 router.get('/statistics/covid_visits', async (req, res) => {
