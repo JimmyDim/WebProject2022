@@ -8,7 +8,7 @@
     <meta name="viewport", initial-scale=1">
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/newusercard.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -20,29 +20,29 @@
     </div>
     <%}%>
     <div class="container">
-    <div class="wrapper login-form"" >
-        <h1>Welcome</h1>
-        <form action="/userLogin" method="POST">
-          <div class="row">
-            <div class="col-lg-9">
-              <label class="form-label" for="username"></label>
-              <input type="text" name="username" id="username" placeholder="username" class="form-control">
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-9">
-              <label class="form-label" for="password"></label>
-            <input type="password" name="password" id="password" placeholder="password" class="form-control">
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-4">
+      <div class="left">
+        <div class="header">
+          <h2 class="animation a1">Welcome to CovidTracker</h2>
+          <h4 class="animation a2">Enter your credentials</h4>
+        </div>
+        <div class="form">
+          <form action="/userLogin" method="POST">
+            <!-- <label class="form-label" for="username"></label> -->
+            <input type="text" name="username" id="username" class="form-field animation a3" placeholder="Username">
+            <!-- <label class="form-label" for="password"></label> -->
+            <input type="password" name="password" id="password" class="form-field animation a4" placeholder="Password">
+
+            <p class="animation a5"><a href="/userSignUp">Not a member? Register now</a></p>
+
+            <div class="row input-field animation a3">
+              <div class="col-lg-6">
               <button class="btn btn-primary btn-block mb-4 button">Sign in</button>
             </div>  
-            <a href="/userSignUp" class="button">Not a member? Register</a>
-          </div>
+           </div>
         </form>
       </div>
+    </div>
+    <div class="right"></div>
     </div>
 </body>
 </html>

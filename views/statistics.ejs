@@ -51,9 +51,7 @@
     var users = <%= users %>  
     console.log(users);    
     var active = <%= active %>  
-    console.log(active);   
-    var total_inf_visits = <%= total_inf_visits %>  
-    console.log(total_inf_visits);        
+    console.log(active);            
  </script>
 
   <script>
@@ -97,7 +95,7 @@
         labels: ['Covid Uninfected', 'Covid infected'],
         datasets: [{
           label: '# of Positive Users',
-          data: [visits, active],
+          data: [users-active, active],
           backgroundColor: [
             'rgba(75, 192, 192, 0.2)',
             'rgba(255, 99, 132, 0.2)'
@@ -111,38 +109,6 @@
       }
     });
   </script>
-
-<div class="container">
-  <h3>Total Infected Visits</h3>
-  <div class="chart-container"
-    style="height:600px; width:600px; margin-top: 50px; margin-right: 150px; margin-left: 250px;">
-    <canvas id="myChart3" width="400" height="400"></canvas>
-  </div>
-
-</div>
-
-<script>
-  const ctx3 = document.getElementById('myChart4');
-  const myChart3 = new Chart(ctx3, {
-    type: 'pie',
-    data: {
-      labels: ['Non Infected Visits', 'Infected Visits'],
-      datasets: [{
-        label: '# of Positive Visits',
-        data: [users-active-total_inf_visits, total_inf_visits],
-        backgroundColor: [
-          'rgba(220, 255, 0, 0.4)',
-          'rgba(255, 151, 0, 0.4)'
-        ],
-        borderColor: [
-          'rgba(220, 255, 0, 1)',
-          'rgba(255, 151, 0, 1)'          
-        ],
-        borderWidth: 1
-      }]
-    }
-  });
-</script>
 
 </body>
 
