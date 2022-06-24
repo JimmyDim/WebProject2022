@@ -107,6 +107,7 @@ This is the project for the CEID Web Development Course.
 
 ### Διαχειριστής
 
+
 1. Σύνδεση στο σύστημα (`adminlogin.ejs`)
     * Δεν είμαι διαχειριστής --> (`userlogin.ejs`)
     1. Στήσιμο Βάσης Δεδομένων
