@@ -7,6 +7,7 @@ const Poi = require('../models/poiModel');
 const Visit = require('../models/visitModel')
 var haversine = require("haversine-distance");
 const { findById } = require('../models/user');
+const app = express();
 
 //Middleware func checks if the user is logged in. In other case redirect in the login page
 const requiredLogin = (req, res, next) => {
@@ -213,7 +214,6 @@ router.get('/visitsEstimation/:name_of_poi', async (req, res) => {
     const name_of_poi = decodeURIComponent(req.params.name_of_poi);
 
     const visits_estimation = await Poi.aggregate([
-        //Ιn the name we use hardcoded the name of the POI for now.
         { $match: { "properties.name": name_of_poi } },
         { $unwind: "$properties.populartimes" },
         { $match: { "properties.populartimes.name": current_weekday } },
@@ -295,5 +295,57 @@ router.get('/checkContact', async(req, res)=>{
 
     res.render('checkContact.ejs', {user_visits})
 })
+
+router.get('/visitrate/:name_of_poi', async (req, res) => {
+    let current_weekday = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][new Date().getDay()]
+    const date = new Date();
+    const current_time = date.getHours();
+
+    const name_of_poi = decodeURIComponent(req.params.name_of_poi);
+
+    const visits_estimation = await Poi.aggregate([
+        { $match: { "properties.name": name_of_poi } },
+        { $unwind: "$properties.populartimes" },
+        { $match: { "properties.populartimes.name": current_weekday } },
+        {
+            $project: {
+                _id: 0, "properties.populartimes.data": 1                
+            }
+        }
+    ])
+    const visitarray = visits_estimation[0].properties.populartimes.data;
+    var max = visitarray[0];
+   for(var i=0;i<=visitarray.length;i++){
+        if (visitarray[i]> max){
+            max = visitarray[i]
+        }
+    }
+    var rate = 0;
+    var icon = 'green';
+    for(var i=0;i<=visitarray.length-1;i++){
+        if (visitarray[i]!=0){
+            rate = (visitarray[i]/max) * 100
+            }
+        if (rate <= 32){
+            icon = 'green';
+        }
+        else if (rate <= 65){
+            icon = 'orange';
+        }
+        else if (rate >= 66){
+            icon = 'red';
+        }
+        
+        if (current_time == i){
+            var finalicon = icon;             
+        }
+    }
+    res.send({ icon_colour: finalicon });
+
+})
+
+app.use(express.static('public')); 
+app.use('/icons', express.static('icons'));
+ 
 
 module.exports = router;
