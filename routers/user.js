@@ -16,20 +16,23 @@ const requiredLogin = (req, res, next) => {
     }
     next();
 }
-// const isAdmin = (req, res, next) => {
-//     // Check if the requesting user is marked as admin in database
+const isAdmin = (req, res, next) => {
+    // Check if the requesting user is marked as admin in database
+    user_id = req.session.user_id;
+    const user = User.findById(user_id);
+    if(user.isAdmin == false){
+        return res.redirect('/homepage')
+    }else{
+        return res.redirect('/profile')
+    }
 
-//     let isAdmin = '123';
-//     isAdmin = req.session._id;
-//     console.log(isAdmin)
-//     if (isAdmin == "62b4d7b94c3b3746bca26758") {
-//         next();
-//     } else {
-//         res.redirect('/userLogin')
-//     }
-// }
+}
 router.get('/', (req, res) => {
     res.redirect('/userLogin');
+})
+
+router.get('/adminHomepage', async(req, res)=>{
+    res.render('homepage.ejs')
 })
 
 router.get('/homepage', async (req, res) => {
@@ -81,14 +84,27 @@ router.get('/userLogin', (req, res) => {
     res.render('userLogin.ejs', { messages: req.flash('failedLogin') });
 })
 
+router.get('/adminPage', (req, res)=>{
+    res.render('adminPage.ejs')
+})
+
 router.post('/userLogin', async (req, res) => {
     const { username, password } = req.body;
     const foundUser = await User.findAndValidate(username, password);
     if (foundUser) {
-        //if we do succesfully login, we store the user ID in the session.
-        req.session.user_id = foundUser._id;
-        res.redirect('/homepage');
-    } else {
+        //Find the user from the DB in order to check id is Admin or not.
+        var user = await User.aggregate([
+            {$match : {username : username}}
+        ])
+        if(user[0].isAdmin === true){
+            //if we do succesfully login, we store the user ID in the session.
+            req.session.user_id = foundUser._id;
+            res.redirect('/adminPage');
+        }else{
+            req.session.user_id = foundUser._id;
+            res.redirect('/homepage');
+        }
+    }else{
         req.flash('failedLogin', "Username or Password is incorrect! Try again")
         res.redirect('/userLogin');
     }

@@ -32,6 +32,11 @@ const userSchema = new mongoose.Schema({
     },
     positive_datetime: {
         type: Date
+    },
+    isAdmin:{
+        type: Boolean,
+        required : false,
+        default : false
     }
 
 })

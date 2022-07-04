@@ -80,6 +80,7 @@ router.post('/poiTable', async (req, res,) => {
 */
 
 
+
 //GET ALL POIS
 router.get('/pois', async (req, res,) => {
 
@@ -137,21 +138,18 @@ router.post('/visit', async (req, res) => {
 router.get('/statistics/total_visits', async (req, res) => {
     const total_visits = await Visit.count();
 
-    res.render('chart1', { total_visits });
-
+    res.render('chart2', { visits : total_visits });
 })
 
-
+//query: total number of active covid cases.
 router.get('/statistics/active', async (req, res) => {
-    //query: total active covid cases.
-    const total_visits = await Visit.count();
     //query: total active covid cases.
     const total_users = await User.count();
     const active_covid_cases = await User.aggregate([
         { $match: { positive: "positive" } },
         { $count: 'total_active_covid_cases' }
     ])
-    res.render('statistics', { users: total_users, active: active_covid_cases[0].total_active_covid_cases, visits: total_visits });
+    res.render('chart1', { users: total_users, active: active_covid_cases[0].total_active_covid_cases});
 });
 
 //query: total vists of covid infected people.
@@ -178,7 +176,7 @@ router.get('/statistics/covid_visits', async (req, res) => {
         }
 
     }
-    res.send(total)
+    res.render('chart5', {total})
 })
 
 //query: pois classification based on type and number of visits
@@ -216,7 +214,11 @@ router.get('/statistics/type_classification', async (req, res) => {
         }
 
     }
-    res.send(dictionary)
+    //res.send(dictionary)
+    array = Object.keys(dictionary)
+    values = Object.values(dictionary)
+    console.log(array)
+    res.render('chart3', {array, values})
 })
 
 //query : e
@@ -253,8 +255,11 @@ router.get('/statistics/type_classification_cases', async (req, res) => {
         }
 
     }
-    res.send(dictionary)
-
+    //res.send(dictionary)
+    array = Object.keys(dictionary)
+    values = Object.values(dictionary)
+    console.log(dictionary)
+    res.render('chart4', {array, values})
 })
 
 
