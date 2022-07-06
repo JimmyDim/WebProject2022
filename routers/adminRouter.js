@@ -62,22 +62,48 @@ router.post('/poiTable', async (req, res,) => {
 
 
 //INSERT POI JSON FILE
-/*router.post('/addjsonfile', async (req, res, next) => {
+router.post('/uploadfile', async (req, res, next) => {
 
     try {
-        const data = await fs.readFileSync('public/starting_pois.json');
-        const jsondata = JSON.parse(data);
-        Poi.insertMany(jsondata).then(() => {
-            res.send('success')
-        }).catch((e) => {
-            res.send(e)
-        });
+        console.log("this is res", res)
+
+
+        // const data = await fs.readFileSync(res);
+        // const jsondata = JSON.parse(data);
+
+        // console.log("this is what i send", jsondata)
+
+        // for (let i = 0; i < jsondata.length; i++) {
+
+        //     // const poiTables = JSON.parse(poiTable)
+        //     const poi = new Poi();
+        //     console.log(jsondata[i].coordinates)
+        //     poi.properties.name = poiTable[i].name
+        //     poi.properties.address = poiTable[i].address
+        //     poi.properties.types = poiTable[i].types
+        //     poi.properties.rating = poiTable[i].rating
+        //     poi.properties.rating_n = poiTable[i].rating_n
+        //     poi.type = 'Feature';
+        //     poi.geometry.type = 'Point';
+        //     poi.geometry.coordinates = [poiTable[i].coordinates.lng, poiTable[i].coordinates.lat];
+        //     poi.properties.time_spent = poiTable[i].time_spent
+        //     poi.properties.populartimes = poiTable[i].populartimes
+
+        //     console.log(i);
+        //     await poi.save();
+        // }
+
+        // Poi.insertMany(jsondata).then(() => {
+        //     res.send('success')
+        // }).catch((e) => {
+        //     res.send(e)
+        // });
     } catch (error) {
         console.error(`Got an error trying to read the file: ${error.message}`);
     }
     console.log("creating poi");
 })
-*/
+
 
 
 
@@ -138,7 +164,7 @@ router.post('/visit', async (req, res) => {
 router.get('/statistics/total_visits', async (req, res) => {
     const total_visits = await Visit.count();
 
-    res.render('chart2', { visits : total_visits });
+    res.render('chart2', { visits: total_visits });
 })
 
 //query: total number of active covid cases.
@@ -149,7 +175,7 @@ router.get('/statistics/active', async (req, res) => {
         { $match: { positive: "positive" } },
         { $count: 'total_active_covid_cases' }
     ])
-    res.render('chart1', { users: total_users, active: active_covid_cases[0].total_active_covid_cases});
+    res.render('chart1', { users: total_users, active: active_covid_cases[0].total_active_covid_cases });
 });
 
 //query: total vists of covid infected people.
@@ -176,7 +202,7 @@ router.get('/statistics/covid_visits', async (req, res) => {
         }
 
     }
-    res.render('chart5', {total})
+    res.render('chart5', { total })
 })
 
 //query: pois classification based on type and number of visits
@@ -218,7 +244,7 @@ router.get('/statistics/type_classification', async (req, res) => {
     array = Object.keys(dictionary)
     values = Object.values(dictionary)
     console.log(array)
-    res.render('chart3', {array, values})
+    res.render('chart3', { array, values })
 })
 
 //query : e
@@ -259,7 +285,7 @@ router.get('/statistics/type_classification_cases', async (req, res) => {
     array = Object.keys(dictionary)
     values = Object.values(dictionary)
     console.log(dictionary)
-    res.render('chart4', {array, values})
+    res.render('chart4', { array, values })
 })
 
 

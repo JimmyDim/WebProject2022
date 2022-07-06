@@ -27,6 +27,7 @@
           <ul class="nav navbar-nav">
             <li><a href="/adminPage">Homepage</a></li>
             <li class="active"><a href="/statistics/active">Statistics</a></li>
+            <li><a href="/admin/resources/Poi" target="_blank">Database</a></li>
             <li><a href="/userLogout">Log Out</a></li>
           </ul>
         </div>
@@ -34,12 +35,13 @@
     </div>
   </nav>
 
- 
+
   <div class="container">
     <h3>Active Covid Cases</h3>
     <p>Total number of reported COVID-19 cases</p>
     <div class="dropdown">
-      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="true">
         Statistics Diagram
         <span class="caret"></span>
       </button>
@@ -53,21 +55,21 @@
       </ul>
     </div>
 
-        <div class="container">
-            
-            <div class="chart-container"
-                style="height:600px; width:600px; margin-top: 50px; margin-right: 150px; margin-left: 250px;">
-                <canvas id="myChart2" width="400" height="400"></canvas>
-            </div>
-        </div>
+    <div class="container">
+
+      <div class="chart-container"
+        style="height:600px; width:600px; margin-top: 50px; margin-right: 150px; margin-left: 250px;">
+        <canvas id="myChart2" width="400" height="400"></canvas>
+      </div>
+    </div>
 
   </div>
 
   <script>
-    var users = <%= users %>  
-    console.log(users);    
-    var active = <%= active %>  
-    console.log(active);
+    var users = <%= users %>
+      console.log(users);
+    var active = <%= active %>
+      console.log(active);
   </script>
 
   <script>
@@ -78,7 +80,7 @@
         labels: ['Covid Uninfected', 'Covid infected'],
         datasets: [{
           label: '# of Positive Users',
-          data: [users-active, active],
+          data: [users - active, active],
           backgroundColor: [
             'rgba(75, 192, 192, 0.2)',
             'rgba(255, 99, 132, 0.2)',
@@ -86,7 +88,7 @@
           ],
           borderColor: [
             'rgba(75, 192, 192, 1)',
-            'rgba(255, 99, 132, 1)'          
+            'rgba(255, 99, 132, 1)'
           ],
           borderWidth: 1
         }]
@@ -95,5 +97,3 @@
   </script>
 
 </body>
-
-

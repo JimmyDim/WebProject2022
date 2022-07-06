@@ -27,6 +27,7 @@
           <ul class="nav navbar-nav">
             <li><a href="/adminPage">Homepage</a></li>
             <li class="active"><a href="/statistics/active">Statistics</a></li>
+            <li><a href="/admin/resources/Poi" target="_blank">Database</a></li>
             <li><a href="/userLogout">Log Out</a></li>
           </ul>
         </div>
@@ -34,12 +35,13 @@
     </div>
   </nav>
 
- 
+
   <div class="container">
     <h3>Total Visits </h3>
     <p>Total number of visits recorded in the system.</p>
     <div class="dropdown">
-      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="true">
         Statistics Diagram
         <span class="caret"></span>
       </button>
@@ -60,7 +62,7 @@
 
   <script>
     var visits = <%= visits %>          
- </script>
+  </script>
 
   <script>
     const ctx = document.getElementById('myChart');
@@ -73,7 +75,7 @@
           data: [visits],
           backgroundColor: [
             'rgba(0, 88, 255, 0.7)'
-            
+
           ],
           borderColor: [
             'rgba(0, 88, 255, 1)'

@@ -12,7 +12,7 @@ const adminBro = new AdminBro({
   rootPath: '/admin',
   branding: {
     logo: 'https://indiebenefits.com/wp-content/uploads/2022/06/health-insurance.png',
-    companyName: 'Covid-19 Shield'
+    companyName: 'CovidTracker'
   },
 
 })

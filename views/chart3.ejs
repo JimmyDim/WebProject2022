@@ -27,6 +27,7 @@
           <ul class="nav navbar-nav">
             <li><a href="/adminPage">Homepage</a></li>
             <li class="active"><a href="/statistics/active">Statistics</a></li>
+            <li><a href="/admin/resources/Poi" target="_blank">Database</a></li>
             <li><a href="/userLogout">Log Out</a></li>
           </ul>
         </div>
@@ -35,9 +36,11 @@
   </nav>
   <div class="container">
     <h3>Pois Classification based on Type & Visits</h3>
-    <p>Classification of the categories of POIS of the system, based on the total number of visits, as registered by users.</p>
+    <p>Classification of the categories of POIS of the system, based on the total number of visits, as registered by
+      users.</p>
     <div class="dropdown">
-      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="true">
         Statistics Diagram
         <span class="caret"></span>
       </button>
@@ -58,14 +61,14 @@
   </div>
 
   <script>
-    var res = [] ;
+    var res = [];
     var values = [];
-    res.push(<%- JSON.stringify(array) %>);
-    values.push(<%- JSON.stringify(values) %>)
-    
-    
+    res.push(<% - JSON.stringify(array) %>);
+    values.push(<% - JSON.stringify(values) %>)
+
+
     console.log(res[0])        
- </script>
+  </script>
 
   <script>
     const ctx2 = document.getElementById('myChart2');
@@ -77,7 +80,7 @@
           label: '# of Positive Users',
           data: values[0],
           backgroundColor: [
-          'rgba(75, 192, 192, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
             'rgba(255, 99, 132, 0.2)',
             'rgba(149, 70, 180, 0.2)',
             'rgba(100, 170, 80, 0.2)',
@@ -97,7 +100,7 @@
             'rgba(240, 270, 240, 0.2)'
           ],
           borderColor: [
-          'rgba(75, 192, 192, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
             'rgba(255, 99, 132, 0.2)',
             'rgba(149, 70, 180, 0.2)',
             'rgba(100, 170, 80, 0.2)',
@@ -114,7 +117,7 @@
             'rgba(122, 225, 90, 0.2)',
             'rgba(205, 260, 255, 0.2)',
             'rgba(40, 235, 88, 0.2)',
-            'rgba(240, 270, 240, 0.2)'      
+            'rgba(240, 270, 240, 0.2)'
           ],
           borderWidth: 1
         }]
