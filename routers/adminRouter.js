@@ -194,6 +194,7 @@ router.get('/statistics/type_classification', async (req, res) => {
         { $project: { "type": 1, "_id": 0 } }
     ])
     unified_array = all_types[0].type.join(",").split(",");
+
     const poi_types = [...new Set(unified_array)];
 
     const dictionary = {};
