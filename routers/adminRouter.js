@@ -11,6 +11,7 @@ const req = require('express/lib/request');
 const poiTable = require('../public/starting_pois_original.json');
 const { type } = require('express/lib/response');
 const { isAdmin } = require('./user');
+const formidable = require("formidable");
 //const fetch = require("node-fetch")
 
 
@@ -58,6 +59,65 @@ router.post('/poiTable', async (req, res,) => {
 
     }
     res.send('ok')
+})
+
+router.post('/uploadfile', async (req, res, next) => {
+
+    try {
+        let file2 = null;
+        new formidable.IncomingForm().parse(req, (err, fields, files) => {
+            if (err) {
+                console.error('Error', err)
+                throw err
+            }
+            console.log('Fields', fields)
+           // console.log('Files', files)
+           
+           
+            for (const file of Object.entries(files)) {
+                console.log(file)
+                const data =  fs.readFileSync(file);
+                const jsondata = JSON.parse(data);
+                console.log(jsondata);
+                res.send(jsondata)
+            }
+            
+        })
+        
+        const data = await fs.readFileSync(res);
+        const jsondata = JSON.parse(data);
+
+        console.log("this is what i send", jsondata)
+
+        for (let i = 0; i < jsondata.length; i++) {
+
+            // const poiTables = JSON.parse(poiTable)
+            const poi = new Poi();
+            console.log(jsondata[i].coordinates)
+            poi.properties.name = poiTable[i].name
+            poi.properties.address = poiTable[i].address
+            poi.properties.types = poiTable[i].types
+            poi.properties.rating = poiTable[i].rating
+            poi.properties.rating_n = poiTable[i].rating_n
+            poi.type = 'Feature';
+            poi.geometry.type = 'Point';
+            poi.geometry.coordinates = [poiTable[i].coordinates.lng, poiTable[i].coordinates.lat];
+            poi.properties.time_spent = poiTable[i].time_spent
+            poi.properties.populartimes = poiTable[i].populartimes
+
+            console.log(i);
+            await poi.save();
+        }
+
+        Poi.insertMany(jsondata).then(() => {
+            res.send('success')
+        }).catch((e) => {
+            res.send(e)
+        });
+    } catch (error) {
+        console.error(`Got an error trying to read the file: ${error.message}`);
+    }
+    console.log("creating poi");
 })
 
 

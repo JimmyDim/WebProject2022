@@ -24,6 +24,7 @@
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="/adminPage">Homepage</a></li>
                         <li><a href="/statistics/total_visits">Statistics</a></li>
+                        <li><a href="/admin/resources/Poi" target=”_blank”>Database</a></li>
                         <li><a href="/userLogout">Log Out</a></li>
                     </ul>
                 </div>
@@ -32,7 +33,21 @@
     </nav>
 
     <div class="container bootstrap snippets bootdey">
-        <h3 class="text-primary animation a1">Welcome to Admin Homepage!</h3>
+        <h3 class="text-primary animation a1">Welcome to the Admin Homepage!</h3>
         <hr>
+        <p class="animation a2">Here you can access the Administration Resources on the Navbar.</p>
+        <br>
+        <p class="animation a2">To see statistics based on our user data, select 'Statistics'.</p>
+        <br>
+        <p class="animation a2">To access CRUD operations, select 'Database' to open our Database Panel.
+        </p>
+        <br>
+        <p class="animation a4 ">Alternatively, you can upload a JSON File with POI data here:
+        </p>
+        <form class="animation a4" method="POST" action="/uploadfile">
+            <input type="file" id="myFile" name="filename">
+            <br>
+            <input type="submit">
+        </form>
     </div>
 </body>
