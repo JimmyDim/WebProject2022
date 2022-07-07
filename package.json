@@ -29,6 +29,7 @@
     "express-formidable": "^1.2.0",
     "express-session": "^1.17.3",
     "filereader": "^0.10.3",
+    "formidable": "^2.0.1",
     "haversine-distance": "^1.2.1",
     "method-override": "^3.0.0",
     "mongoose": "^6.2.10",
